@@ -95,3 +95,19 @@ export const updateUserById = async (
 		console.error("Error updating document: ", error);
 	}
 };
+export const getUserBySubId = async (id: string): Promise<Users | null> => {
+	try {
+		const userRef = doc(firebaseDb, "users", id);
+		const docSnap = await getDoc(userRef);
+		if (docSnap.exists()) {
+			const user = docSnap.data() as Users;
+			return user;
+		} else {
+			console.log("No such document!");
+			return null;
+		}
+	} catch (error) {
+		console.error("Error getting document: ", error);
+		return null;
+	}
+};
