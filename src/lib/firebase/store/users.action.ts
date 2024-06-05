@@ -59,3 +59,10 @@ export const getAllUsers = async (): Promise<Users[]> => {
 		return [];
 	}
 };
+// TODO upload image to firebase storage
+
+// TODO update user by id
+
+// TODO get user by subId
+
+// TODO update user print status
