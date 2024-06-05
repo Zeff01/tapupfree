@@ -11,7 +11,6 @@ import {
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-
 export const addUser = async (user: Users): Promise<string | null> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
@@ -58,16 +57,15 @@ export const getAllUsers = async (): Promise<Users[]> => {
 		return [];
 	}
 };
-// TODO upload image to firebase storage
 export const uploadImage = async (
 	image: Photo | null
 ): Promise<string | null> => {
 	try {
-		const imageName = image?.raw.name;
+		const filename = self.crypto.randomUUID();
 		const imageRaw = image?.raw;
 
 		if (imageRaw) {
-			const storageRef = ref(firebaseStorage, `users/${imageName}`);
+			const storageRef = ref(firebaseStorage, `users/${filename}.jpg`);
 			await uploadBytesResumable(storageRef, imageRaw);
 			const downloadURL = await getDownloadURL(storageRef);
 			console.log("File available at", downloadURL);

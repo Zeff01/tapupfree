@@ -42,7 +42,6 @@ export default function Home() {
 				preview: URL.createObjectURL(file),
 				raw: file,
 			});
-			console.log("this is file", file);
 
 			const dl_url = await uploadImage({
 				preview: URL.createObjectURL(file),
