@@ -1,5 +1,5 @@
 "use client";
-import { addUser } from "@/src/lib/firebase/store/users.action";
+import { addUser, getAllUsers } from "@/src/lib/firebase/store/users.action";
 import Image from "next/image";
 import { useState, FormEvent, ChangeEvent } from "react";
 
@@ -25,9 +25,12 @@ export default function Home() {
 			email: event.currentTarget.email.value,
 			phoneNumber: event.currentTarget.phone.value,
 			image: "",
+			printStatus: false,
 		};
 		const link = await addUser(user);
+		const userList = await getAllUsers();
 		console.log(link);
+		console.log(userList);
 	};
 
 	const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
