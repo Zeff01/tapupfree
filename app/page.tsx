@@ -1,4 +1,5 @@
 "use client";
+import { addUser } from "@/src/lib/firebase/store/users.action";
 import Image from "next/image";
 import { useState, FormEvent, ChangeEvent } from "react";
 
@@ -10,9 +11,23 @@ interface Photo {
 export default function Home() {
 	const [photo, setPhoto] = useState<Photo | null>(null);
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log("Form submitted");
+
+		// integrate the addUser function here
+
+		const user = {
+			company: event.currentTarget.company.value,
+			position: event.currentTarget.position.value,
+			firstName: event.currentTarget.firstName.value,
+			lastName: event.currentTarget.lastName.value,
+			email: event.currentTarget.email.value,
+			phoneNumber: event.currentTarget.phone.value,
+			image: "",
+		};
+		const link = await addUser(user);
+		console.log(link);
 	};
 
 	const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
