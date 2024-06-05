@@ -18,7 +18,7 @@ export default function Home() {
 		event.preventDefault();
 		console.log("Form submitted");
 
-		// integrate the addUser function here
+		// integration with firebase
 
 		const user = {
 			company: event.currentTarget.company.value,
@@ -30,13 +30,19 @@ export default function Home() {
 			image: imageUrl || "",
 			printStatus: false,
 		};
-		// const link = await addUser(user);
+		// add user to database
+		await addUser(user);
+
+		// get all users
 		const userList = await getAllUsers();
-		// console.log(link);
-		console.log(userList);
-		const userbyId = await getUserBySubId("5uHHKTqREUT3TY8DMShE");
-		console.log(userbyId);
-		await updateUserPrintStatusById("5uHHKTqREUT3TY8DMShE");
+
+		// get users by subId
+		const sample_id = "5uHHKTqREUT3TY8DMShE";
+		const userbyId = await getUserBySubId(sample_id);
+
+		// update user print status by id
+		// upon hit print to avoid duplicate prints
+		await updateUserPrintStatusById(sample_id);
 	};
 
 	const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
