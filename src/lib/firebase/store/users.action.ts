@@ -2,11 +2,14 @@ import {
 	collection,
 	addDoc,
 	doc,
-	getFirestore,
 	updateDoc,
 	getCountFromServer,
 	getDocs,
+	getDoc,
+	where,
 	serverTimestamp,
+	setDoc,
+	query,
 } from "firebase/firestore";
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
@@ -17,27 +20,28 @@ export const addUser = async (user: Users): Promise<string | null> => {
 
 		const snapshot = await getCountFromServer(userCollection);
 		const totalUsers = snapshot.data().count;
-		let final_subId = "",
+		let userCode = "",
 			user_link = "";
 		if (totalUsers >= 0) {
 			// get last 4 characters of the docRef.id
+
 			const docRef = await addDoc(userCollection, {
 				...user,
 				createdAt: serverTimestamp(),
 			});
-			const id = docRef.id.slice(-3);
-			final_subId = (totalUsers + 1).toString() + id;
+			const sub_id = docRef.id.slice(-3);
+			const full_id = docRef.id;
+
+			userCode = (totalUsers + 1).toString() + sub_id;
 
 			// update the user with the final_subId
 			const userRef = doc(userCollection, docRef.id);
 			const link = window.location.href;
-			user_link = `${link}${final_subId}`;
-			await updateDoc(userRef, { subId: final_subId, user_link });
+			console.log("link", link);
+			user_link = `${link}${userCode}`;
+			await updateDoc(userRef, { userCode, user_link, id: full_id });
 		}
-		console.log("users", user);
-		// get the current link
-
-		// return the link with the final_subId
+		console.log("Document written with ID: ", userCode, user_link);
 		return user_link;
 	} catch (error) {
 		console.error("Error adding document: ", error);
@@ -78,8 +82,16 @@ export const uploadImage = async (
 		return "";
 	}
 };
-// TODO update user by id
-
-// TODO get user by subId
-
-// TODO update user print status
+export const updateUserById = async (
+	user_id: string,
+	user: Users
+): Promise<void> => {
+	try {
+		const userCollection = collection(firebaseDb, "users");
+		const userRef = doc(userCollection, user_id);
+		await setDoc(userRef, { ...user }, { merge: true });
+		console.log("Document updated with ID: ", user_id);
+	} catch (error) {
+		console.error("Error updating document: ", error);
+	}
+};

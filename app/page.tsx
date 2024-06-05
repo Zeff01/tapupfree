@@ -2,6 +2,8 @@
 import {
 	addUser,
 	getAllUsers,
+	getUserBySubId,
+	updateUserPrintStatusById,
 	uploadImage,
 } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
@@ -28,11 +30,13 @@ export default function Home() {
 			image: imageUrl || "",
 			printStatus: false,
 		};
-		const link = await addUser(user);
+		// const link = await addUser(user);
 		const userList = await getAllUsers();
 		// console.log(link);
 		console.log(userList);
-		console.log("Photo", photo);
+		const userbyId = await getUserBySubId("5uHHKTqREUT3TY8DMShE");
+		console.log(userbyId);
+		await updateUserPrintStatusById("5uHHKTqREUT3TY8DMShE");
 	};
 
 	const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
