@@ -6,4 +6,5 @@ export type Users = {
 	email: string;
 	phoneNumber: string;
 	image: string;
+	printStatus: boolean;
 };
