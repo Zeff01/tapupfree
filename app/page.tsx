@@ -1,15 +1,16 @@
 "use client";
-import { addUser, getAllUsers } from "@/src/lib/firebase/store/users.action";
+import {
+	addUser,
+	getAllUsers,
+	uploadImage,
+} from "@/src/lib/firebase/store/users.action";
+import { Photo } from "@/src/lib/firebase/store/users.type";
 import Image from "next/image";
 import { useState, FormEvent, ChangeEvent } from "react";
 
-interface Photo {
-	preview: string;
-	raw: File;
-}
-
 export default function Home() {
 	const [photo, setPhoto] = useState<Photo | null>(null);
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -24,22 +25,30 @@ export default function Home() {
 			lastName: event.currentTarget.lastName.value,
 			email: event.currentTarget.email.value,
 			phoneNumber: event.currentTarget.phone.value,
-			image: "",
+			image: imageUrl || "",
 			printStatus: false,
 		};
 		const link = await addUser(user);
 		const userList = await getAllUsers();
-		console.log(link);
+		// console.log(link);
 		console.log(userList);
+		console.log("Photo", photo);
 	};
 
-	const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const file = event.target.files[0];
 			setPhoto({
 				preview: URL.createObjectURL(file),
 				raw: file,
 			});
+			console.log("this is file", file);
+
+			const dl_url = await uploadImage({
+				preview: URL.createObjectURL(file),
+				raw: file,
+			});
+			if (dl_url) setImageUrl(dl_url);
 		}
 	};
 

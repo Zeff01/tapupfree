@@ -8,3 +8,8 @@ export type Users = {
 	image: string;
 	printStatus: boolean;
 };
+
+export interface Photo {
+	preview: string;
+	raw: File;
+}

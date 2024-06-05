@@ -8,13 +8,13 @@ import {
 	getDocs,
 	serverTimestamp,
 } from "firebase/firestore";
-import firebaseDb from "../config/firebase";
-import { Users } from "./users.type";
+import { firebaseDb, firebaseStorage } from "../config/firebase";
+import { Photo, Users } from "./users.type";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export const addUser = async (user: Users): Promise<string | null> => {
 	try {
-		const db = getFirestore(firebaseDb);
-		const userCollection = collection(db, "users");
+		const userCollection = collection(firebaseDb, "users");
 
 		const snapshot = await getCountFromServer(userCollection);
 		const totalUsers = snapshot.data().count;
@@ -35,7 +35,7 @@ export const addUser = async (user: Users): Promise<string | null> => {
 			user_link = `${link}${final_subId}`;
 			await updateDoc(userRef, { subId: final_subId, user_link });
 		}
-
+		console.log("users", user);
 		// get the current link
 
 		// return the link with the final_subId
@@ -49,8 +49,7 @@ export const addUser = async (user: Users): Promise<string | null> => {
 // get all users from the database
 export const getAllUsers = async (): Promise<Users[]> => {
 	try {
-		const db = getFirestore(firebaseDb);
-		const userCollection = collection(db, "users");
+		const userCollection = collection(firebaseDb, "users");
 		const snapshot = await getDocs(userCollection);
 		const users: Users[] = snapshot.docs.map((doc) => doc.data() as Users);
 		return users;
@@ -60,7 +59,27 @@ export const getAllUsers = async (): Promise<Users[]> => {
 	}
 };
 // TODO upload image to firebase storage
+export const uploadImage = async (
+	image: Photo | null
+): Promise<string | null> => {
+	try {
+		const imageName = image?.raw.name;
+		const imageRaw = image?.raw;
 
+		if (imageRaw) {
+			const storageRef = ref(firebaseStorage, `users/${imageName}`);
+			await uploadBytesResumable(storageRef, imageRaw);
+			const downloadURL = await getDownloadURL(storageRef);
+			console.log("File available at", downloadURL);
+			return downloadURL;
+		}
+
+		return "";
+	} catch (error) {
+		console.error("Error uploading image: ", error);
+		return "";
+	}
+};
 // TODO update user by id
 
 // TODO get user by subId
