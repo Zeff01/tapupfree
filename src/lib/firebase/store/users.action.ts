@@ -111,3 +111,14 @@ export const getUserBySubId = async (id: string): Promise<Users | null> => {
 		return null;
 	}
 };
+
+export const updateUserPrintStatusById = async (id: string): Promise<void> => {
+	try {
+		const userCollection = collection(firebaseDb, "users");
+		const userRef = doc(userCollection, id);
+		await updateDoc(userRef, { printStatus: true });
+		console.log("Document updated with ID: ", id);
+	} catch (error) {
+		console.error("Error updating document: ", error);
+	}
+};
