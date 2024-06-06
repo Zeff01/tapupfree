@@ -38,7 +38,7 @@ export const addUser = async (user: Users): Promise<string | null> => {
 			const userRef = doc(userCollection, docRef.id);
 			const link = window.location.href;
 			console.log("link", link);
-			user_link = `${link}${userCode}`;
+			user_link = `${link}/users${userCode}`;
 			await updateDoc(userRef, { userCode, user_link, id: full_id });
 		}
 		console.log("Document written with ID: ", userCode, user_link);
