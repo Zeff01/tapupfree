@@ -14,7 +14,12 @@ import {
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-export const addUser = async (user: Users): Promise<string | null> => {
+
+type UserCodeLink = {
+	userCode: string;
+	user_link: string;
+};
+export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
 
@@ -42,7 +47,12 @@ export const addUser = async (user: Users): Promise<string | null> => {
 			await updateDoc(userRef, { userCode, user_link, id: full_id });
 		}
 		console.log("Document written with ID: ", userCode, user_link);
-		return user_link;
+
+		const userCodeLink = {
+			userCode,
+			user_link,
+		};
+		return userCodeLink;
 	} catch (error) {
 		console.error("Error adding document: ", error);
 		return null;
