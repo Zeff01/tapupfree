@@ -10,6 +10,9 @@ export default function Home() {
   const navigateToCreate = () => {
     router.push("/create");
   };
+  const navigateToTable = () => {
+    router.push("/users");
+  };
 
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -38,7 +41,7 @@ export default function Home() {
         Create Digital Business Card
       </button>
       <button
-        onClick={navigateToCreate}
+        onClick={navigateToTable}
         className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
       >
         Go to Users Table
