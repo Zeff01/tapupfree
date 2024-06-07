@@ -10,6 +10,7 @@ import {
   serverTimestamp,
   setDoc,
   query,
+  limit,
 } from "firebase/firestore";
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
@@ -134,3 +135,26 @@ export const updateUserPrintStatusById = async (id: string): Promise<void> => {
     console.error("Error updating document: ", error);
   }
 };
+
+export const getUserDataByUserCode = async (userCode:string) : Promise<Users|null> => {
+	try {
+		const userCol = collection(firebaseDb, "users")
+		const q = query(userCol, where("userCode", "==", userCode), limit(1))
+		const document = await getDocs(q)
+		if (document.empty) {
+			return null;
+		}
+		const result : Users[] = []
+		document.forEach(doc => {
+			result.push(doc.data() as Users)
+		})
+		if (result.length === 0) {
+			return null;
+		}
+		return result[0]
+
+	} catch (error) {
+		console.error(error)
+		return null;
+	}
+}

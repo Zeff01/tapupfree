@@ -44,7 +44,7 @@ export default function Create() {
     if (userInfo) {
       localStorage.setItem("userLink", userInfo.user_link);
       localStorage.setItem("userCode", userInfo.userCode);
-      router.push("/action");
+      router.push(`/action?userCode=${userInfo.userCode}`);
     } else {
       console.error("userLink is undefined or not valid.");
     }
