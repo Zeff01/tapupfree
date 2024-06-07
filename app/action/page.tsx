@@ -2,86 +2,86 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
 import axios from "axios";
-import { Users } from "@/src/lib/firebase/store/users.type";
+import Image from "next/image";
 
 const ActionPage = () => {
-	const [link, setLink] = useState<string | undefined>();
-	const [user, setUser] = useState<string | undefined>();
-	const [userData, setUserData] = useState<Users | null>(null);
+  const [link, setLink] = useState<string | undefined>();
+  const [user, setUser] = useState<string | undefined>();
 
-	useEffect(() => {
-		// Directly retrieve the link from localStorage
-		const storedLink = localStorage.getItem("userLink");
-		const storedUser = localStorage.getItem("userCode");
-		if (storedLink) setLink(storedLink);
-		if (storedUser) setUser(storedUser);
-	}, []);
+  useEffect(() => {
+    // Directly retrieve the link and user code from localStorage
+    const storedLink = localStorage.getItem("userLink");
+    const storedUser = localStorage.getItem("userCode");
+    if (storedLink) setLink(storedLink);
+    if (storedUser) setUser(storedUser);
+  }, []);
 
-	if (!link) {
-		return (
-			<div className="text-center">
-				Loading link... If this persists, please check the local storage.
-			</div>
-		);
-	}
-	const fetchUserData = async () => {
-		try {
-			console.log("Fetching user data...");
-			const response = await axios.get(
-				`${process.env.NEXT_PUBLIC_API_LINK}/users/${user}` // userCode sample 23pIT
-			);
-			if (!response) {
-				throw new Error("No response from server");
-			}
-			console.log("User data: ", response.data.data);
-			setUserData(response.data.data);
-		} catch (error) {
-			console.error("Error fetching user data: ", error);
-		}
-	};
-	const handleRedirect = () => {
-		if (link) {
-			console.log("Redirecting to: ", link);
-			fetchUserData();
-			// window.location.href = link;
-		}
-	};
+  if (!link) {
+    return (
+      <div className="text-center">
+        Loading link... If this persists, please check the local storage.
+      </div>
+    );
+  }
 
-	const handlePrintQR = () => {
-		const qrCodeElement = document.getElementById("qrCodeElement");
-		if (qrCodeElement) {
-			const printWindow = window.open("", "_blank");
-			printWindow?.document.open();
-			printWindow?.document.write(
-				`<html><body>${qrCodeElement.innerHTML}</body></html>`
-			);
-			printWindow?.document.close();
-			printWindow?.print();
-			printWindow?.close();
-		}
-	};
+  const fetchUserData = async () => {
+    try {
+      console.log("Fetching user data...");
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_LINK}/users/${user}`
+      );
+      if (!response) {
+        throw new Error("No response from server");
+      }
+      window.location.href = response.data.data.user_link;
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+    }
+  };
 
-	return (
-		<div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
-			<div className="p-6 bg-white shadow-lg rounded-lg">
-				<div id="qrCodeElement" className="p-4 border-b mb-4">
-					<QRCode value={link} />
-				</div>
-				<button
-					onClick={handleRedirect}
-					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-				>
-					Go to Digital business card
-				</button>
-				<button
-					onClick={handlePrintQR}
-					className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-				>
-					Print QR
-				</button>
-			</div>
-		</div>
-	);
+  const handlePrintQR = () => {
+    const qrCodeElement = document.getElementById("qrCodeElement");
+    if (qrCodeElement) {
+      const printWindow = window.open("", "_blank");
+      printWindow?.document.open();
+      printWindow?.document.write(
+        `<html><body>${qrCodeElement.innerHTML}</body></html>`
+      );
+      printWindow?.document.close();
+      printWindow?.print();
+      printWindow?.close();
+    }
+  };
+
+  return (
+    <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <div className="p-6 shadow-lg rounded-lg">
+        <Image
+          src="/assets/zwift-logo.png"
+          alt="Company Logo"
+          width={150}
+          height={150}
+          priority
+          className="mx-auto mb-12"
+        />
+        {/* <div id="qrCodeElement" className="p-4 border-b mb-4">
+          <QRCode value={link} />
+        </div> */}
+        <button
+          onClick={fetchUserData}
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+        >
+          Go to Digital business card
+        </button>
+        <button
+          onClick={handlePrintQR}
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+        >
+          Print Layout
+        </button>
+      </div>
+    </main>
+  );
 };
 
 export default ActionPage;
