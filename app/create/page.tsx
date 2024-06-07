@@ -8,7 +8,7 @@ import { Photo } from "@/src/lib/firebase/store/users.type";
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({}); // Properly typed as Record<string, string>
   const router = useRouter();
 
   const validateForm = (elements: HTMLFormControlsCollection) => {
