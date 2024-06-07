@@ -132,3 +132,19 @@ export const updateUserPrintStatusById = async (id: string): Promise<void> => {
 		console.error("Error updating document: ", error);
 	}
 };
+
+export const getUserData = async (id:string) : Promise<Users|null> => {
+	try {
+		const userRef = doc(firebaseDb, "users", id)
+		const document = await getDoc(userRef)
+		if (!document.exists()) {
+			return null;
+		}
+		const userData = document.data() as Users
+		return userData
+
+	} catch (error) {
+		console.error(error)
+		return null;
+	}
+}
