@@ -9,6 +9,9 @@ export default function Home() {
   const navigateToCreate = () => {
     router.push("/create");
   };
+  const navigateToTable = () => {
+    router.push("/users");
+  };
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
@@ -27,7 +30,7 @@ export default function Home() {
         Create Digital Business Card
       </button>
       <button
-        onClick={navigateToCreate}
+        onClick={navigateToTable}
         className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
       >
         Go to Users Table
