@@ -80,7 +80,7 @@ export default function Card() {
                             alt="user photo" 
                             style={{objectFit: "cover"}}
                             priority
-                            className="w-[55px] h-[55px] shadow-sm rounded-sm"
+                            className="w-[55px] h-[55px] shadow-sm rounded-full"
                             />}
                             <div>
                                 <p className="font-semibold">{user.firstName}&nbsp;{user.lastName}</p>
@@ -90,7 +90,7 @@ export default function Card() {
                         </div>
                     </div>
                     <div>
-                        <QRCodeSVG value={user.user_link as string} size={100} fgColor="gray" />
+                        <QRCodeSVG value={user.user_link as string} size={100}  />
                     </div>
                 </div> :
                 <div className="w-full h-full flex items-center justify-center">
