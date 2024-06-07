@@ -1,17 +1,9 @@
 "use client";
-import { useState, FormEvent, ChangeEvent, ReactNode } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import Image from "next/image";
-import QRCode from "qrcode.react";
 import { useRouter } from "next/navigation";
-import {
-  addUser,
-  getAllUsers,
-  getUserBySubId,
-  updateUserPrintStatusById,
-  uploadImage,
-} from "@/src/lib/firebase/store/users.action";
+import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
-import { format } from "path";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
