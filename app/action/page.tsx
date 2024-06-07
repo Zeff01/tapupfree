@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
 import axios from "axios";
+import Image from "next/image";
 
 const ActionPage = () => {
   const [link, setLink] = useState<string | undefined>();
@@ -53,25 +54,33 @@ const ActionPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
-      <div className="p-6 bg-white shadow-lg rounded-lg">
-        <div id="qrCodeElement" className="p-4 border-b mb-4">
+    <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <div className="p-6 shadow-lg rounded-lg">
+        <Image
+          src="/assets/zwift-logo.png"
+          alt="Company Logo"
+          width={150}
+          height={150}
+          priority
+          className="mx-auto mb-12"
+        />
+        {/* <div id="qrCodeElement" className="p-4 border-b mb-4">
           <QRCode value={link} />
-        </div>
+        </div> */}
         <button
           onClick={fetchUserData}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
         >
           Go to Digital business card
         </button>
         <button
           onClick={handlePrintQR}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
         >
-          Print QR
+          Print Layout
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 
