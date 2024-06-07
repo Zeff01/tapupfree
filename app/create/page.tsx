@@ -85,7 +85,7 @@ export default function Create() {
             <div className="error-messages">
               {Object.entries(formErrors).map(([key, value]) => (
                 <div key={key} className="text-red-500">
-                  {value}
+                  {value as string}
                 </div>
               ))}
             </div>
