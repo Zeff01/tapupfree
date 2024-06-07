@@ -11,20 +11,20 @@ import MoonLoader from "react-spinners/MoonLoader"
 export default function Card() {
     const cardRef = useRef<HTMLDivElement>(null)
     const [user, setUser] = useState<Users|null>(null)
-    const { id } = useParams() as { id: string }
+    const { userCode } = useParams() as { userCode: string }
     
 
 
     const userDataHandler = async () => {
-        const data = await getUserDataByUserCode(id);
+        const data = await getUserDataByUserCode(userCode);
         if (!data) return;
         setUser(data)
     }
 
     useEffect(() => {
-        if (!id) return;
+        if (!userCode) return;
         userDataHandler()
-    }, [id])
+    }, [userCode])
 
     const handleDownloadImage = async () => {
         const card = cardRef.current;
@@ -56,7 +56,7 @@ export default function Card() {
 
     return (
         <div className="w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4">
-            <div id="card" ref={cardRef} className={`relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
+            <div ref={cardRef} className={`relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
                 {
                     user ?                    
                     <div className="w-full h-full flex flex-row gap-x-2 justify-between">
