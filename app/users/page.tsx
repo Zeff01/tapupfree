@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
 import { getAllUsers } from "@/src/lib/firebase/store/users.action";
 import TableComponent from "./components/TableComponent";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,11 +17,3 @@ export default async function UsersPage() {
     </main>
   );
 }
-=======
-
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
->>>>>>> 20b7568dd467cf5b7a17d377b49fdd83a670212a
