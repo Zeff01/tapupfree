@@ -3,7 +3,7 @@ import { QRCodeSVG } from "qrcode.react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas"
-import { getUserData } from "@/src/lib/firebase/store/users.action";
+import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
 import { Users } from "@/src/lib/firebase/store/users.type";
 import { useParams } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader"
@@ -16,7 +16,7 @@ export default function Card() {
 
 
     const userDataHandler = async () => {
-        const data = await getUserData(id);
+        const data = await getUserDataByUserCode(id);
         if (!data) return;
         setUser(data)
     }
@@ -70,7 +70,7 @@ export default function Card() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-y-[2px]">
-                            <Image 
+                            { user.image && <Image 
                             src={user.image} 
                             width={55}
                             height={55} 
@@ -78,7 +78,7 @@ export default function Card() {
                             style={{objectFit: "cover"}}
                             priority
                             className="w-[55px] h-[55px] shadow-sm rounded-sm"
-                            />
+                            />}
                             <div>
                                 <p className="font-semibold">{user.firstName}&nbsp;{user.lastName}</p>
                                 <p className="text-sm">{user.position}</p>
