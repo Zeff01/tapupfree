@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas"
 import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
 import { Users } from "@/src/lib/firebase/store/users.type";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader"
 
 export default function Card() {
     const cardRef = useRef<HTMLDivElement>(null)
     const [user, setUser] = useState<Users|null>(null)
     const { userCode } = useParams() as { userCode: string }
-    
+    const router = useRouter()
 
 
     const userDataHandler = async () => {
@@ -53,9 +53,12 @@ export default function Card() {
         });
       };
     
+    const handleBackToHome = () => {
+        router.push("/")
+    }
 
     return (
-        <div className="w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4">
+        <div className="w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-auto">
             <div ref={cardRef} className={`relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
                 {
                     user ?                    
@@ -109,6 +112,13 @@ export default function Card() {
             disabled={Boolean(!user)}
             >            
                 Convert to PNG
+            </button>
+            <button 
+            onClick={handleBackToHome} 
+            className="mt-auto bg-green-300 px-6 py-2 font-semibold rounded-md shadow-md active:scale-95 transition-all duration-150 disabled:opacity-50"
+            disabled={Boolean(!user)}
+            >            
+                Back to Home
             </button>
         </div>
     )

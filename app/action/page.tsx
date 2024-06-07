@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ActionPage = () => {
   const [link, setLink] = useState<string | undefined>();
   const [user, setUser] = useState<string | undefined>();
+  const router = useRouter()
+  const userCode = useSearchParams().get("userCode")
 
   useEffect(() => {
     // Directly retrieve the link and user code from localStorage
@@ -41,17 +44,18 @@ const ActionPage = () => {
   };
 
   const handlePrintQR = () => {
-    const qrCodeElement = document.getElementById("qrCodeElement");
-    if (qrCodeElement) {
-      const printWindow = window.open("", "_blank");
-      printWindow?.document.open();
-      printWindow?.document.write(
-        `<html><body>${qrCodeElement.innerHTML}</body></html>`
-      );
-      printWindow?.document.close();
-      printWindow?.print();
-      printWindow?.close();
-    }
+    router.push(`/card/${userCode}`)
+    // const qrCodeElement = document.getElementById("qrCodeElement");
+    // if (qrCodeElement) {
+    //   const printWindow = window.open("", "_blank");
+    //   printWindow?.document.open();
+    //   printWindow?.document.write(
+    //     `<html><body>${qrCodeElement.innerHTML}</body></html>`
+    //   );
+    //   printWindow?.document.close();
+    //   printWindow?.print();
+    //   printWindow?.close();
+    // }
   };
 
   return (
