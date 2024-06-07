@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import QRCode from "qrcode.react";
 
 export default function Home() {
   const router = useRouter();
@@ -35,6 +36,12 @@ export default function Home() {
       >
         Go to Users Table
       </button>
+      {/* <QRCode
+        value="https://bradwell-fe.vercel.app"
+        size={256} // Size of the QR code
+        level="H" // Error correction level: L, M, Q, H
+        includeMargin={true} // Include a margin around the QR code
+      /> */}
     </main>
   );
 }

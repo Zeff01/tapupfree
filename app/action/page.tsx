@@ -30,6 +30,7 @@ const ActionPage = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_LINK}/users/${user}`
       );
+      console.log("response:", response);
       if (!response) {
         throw new Error("No response from server");
       }
