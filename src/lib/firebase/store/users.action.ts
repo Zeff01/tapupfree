@@ -42,9 +42,9 @@ export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
 
       // update the user with the final_subId
       const userRef = doc(userCollection, docRef.id);
-      const link = window.location.hostname;
-      const protocol = window.location.protocol;
-      user_link = `${protocol}//${link}/users/${userCode}`;
+      const link = window.location.origin;
+      console.log("link", link);
+      user_link = `${link}/users/${userCode}`;
       await updateDoc(userRef, { userCode, user_link, id: full_id });
     }
     console.log("Document written with ID: ", userCode, user_link);
@@ -136,25 +136,26 @@ export const updateUserPrintStatusById = async (id: string): Promise<void> => {
   }
 };
 
-export const getUserDataByUserCode = async (userCode:string) : Promise<Users|null> => {
-	try {
-		const userCol = collection(firebaseDb, "users")
-		const q = query(userCol, where("userCode", "==", userCode), limit(1))
-		const document = await getDocs(q)
-		if (document.empty) {
-			return null;
-		}
-		const result : Users[] = []
-		document.forEach(doc => {
-			result.push(doc.data() as Users)
-		})
-		if (result.length === 0) {
-			return null;
-		}
-		return result[0]
-
-	} catch (error) {
-		console.error(error)
-		return null;
-	}
-}
+export const getUserDataByUserCode = async (
+  userCode: string
+): Promise<Users | null> => {
+  try {
+    const userCol = collection(firebaseDb, "users");
+    const q = query(userCol, where("userCode", "==", userCode), limit(1));
+    const document = await getDocs(q);
+    if (document.empty) {
+      return null;
+    }
+    const result: Users[] = [];
+    document.forEach((doc) => {
+      result.push(doc.data() as Users);
+    });
+    if (result.length === 0) {
+      return null;
+    }
+    return result[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
