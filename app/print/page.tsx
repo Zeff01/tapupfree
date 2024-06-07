@@ -1,10 +1,7 @@
 "use client"
 import { QRCodeSVG } from "qrcode.react"
 import Image from "next/image"
-import { CiMail } from "react-icons/ci";
-import { SlPhone } from "react-icons/sl";
 import { useRef } from "react";
-import { exportComponentAsPNG } from "react-component-export-image"
 import html2canvas from "html2canvas"
 
 export default function Print() {
@@ -57,13 +54,11 @@ export default function Print() {
                 <div className="w-full h-full flex flex-row gap-x-2 justify-between">
                     <div className="flex-grow flex flex-col justify-between">
                         <div>
-                            <div className="flex flex-row items-center gap-x-2 text-sm">
-                                <CiMail />
-                                <p>{dummyData.email}</p>
+                            <div className="flex flex-row items-center gap-x-2 text-sm h-5">
+                                <p>🖂&nbsp;&nbsp;{dummyData.email}</p>
                             </div>
-                            <div className="flex flex-row items-center gap-x-2 text-sm">
-                                <SlPhone />
-                                <p>{dummyData.phoneNumber}</p>
+                            <div className="flex flex-row items-center gap-x-2 text-sm h-5">
+                                <p>☏&nbsp;&nbsp;{dummyData.phoneNumber}</p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-y-[2px]">
