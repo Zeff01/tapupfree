@@ -41,9 +41,9 @@ export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
 
       // update the user with the final_subId
       const userRef = doc(userCollection, docRef.id);
-      const link = window.location.href;
-      console.log("link", link);
-      user_link = `${link}users/${userCode}`;
+      const link = window.location.hostname;
+      const protocol = window.location.protocol;
+      user_link = `${protocol}//${link}/users/${userCode}`;
       await updateDoc(userRef, { userCode, user_link, id: full_id });
     }
     console.log("Document written with ID: ", userCode, user_link);

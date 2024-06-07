@@ -20,8 +20,6 @@ export default function Update({ params }: { params: { id: string } }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState({});
 
-  console.log(imageUrl);
-
   useEffect(() => {
     const getUser = async () => {
       const getUser = await getUserBySubId(id);
