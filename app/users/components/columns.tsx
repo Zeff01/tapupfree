@@ -51,7 +51,7 @@ export const columns: ColumnDef<Users>[] = [
     header: () => <div className="text-center ">Actions</div>,
     cell: ({ row }) => {
       const link = row.original;
-      if (link.id === "93CmG7zyUM9rmfUcZ4ZI") console.log(link);
+      if (link.id === "LanXgtZFYp7je3p9imBE") console.log(link);
 
       return (
         <div className="flex gap-2 justify-center flex-nowrap ">
