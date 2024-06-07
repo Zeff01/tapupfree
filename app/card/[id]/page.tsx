@@ -13,18 +13,7 @@ export default function Card() {
     const [user, setUser] = useState<Users|null>(null)
     const { id } = useParams() as { id: string }
     
-    const dummyData = {
-        position: "Software Developer",
-        company: "Codibility",
-        firstName: "Jade Barry",
-        lastName: "Lazo",
-        email: "oneabove232@gmail.com",
-        phoneNumber: "09121212121",
-        image: "https://firebasestorage.googleapis.com/v0/b/zwifttech-ccabf.appspot.com/o/users%2F86ad0271-63c2-4a3c-a52b-b9c3a3fab646.jpg?alt=media&token=be034d43-010d-48f7-8ab9-c0e5d594e96d",
-        user_link: "https://web.facebook.com/nephrite.again/"
-    }
 
-    const fullName = `${dummyData.firstName} ${dummyData.lastName}`
 
     const userDataHandler = async () => {
         const data = await getUserData(id);
@@ -39,15 +28,15 @@ export default function Card() {
 
     const handleDownloadImage = async () => {
         const card = cardRef.current;
-        if (!card) return
-        await html2canvas(card, { scale: 2 }).then( canvas => {
+        if (!card || !user) return
+        await html2canvas(card, { scale: 1.1 }).then( canvas => {
           const imgData = canvas.toDataURL('image/png');
       
           // Create a link element
           const link = document.createElement('a');
       
           // Set the download attribute with a filename
-          const fileName = `${fullName}.png`
+          const fileName = `${user?.lastName}.png`
           link.download = fileName;
       
           // Set the href attribute to the image data URL
@@ -74,30 +63,31 @@ export default function Card() {
                     <div className="flex-grow flex flex-col justify-between">
                         <div>
                             <div className="flex flex-row items-center gap-x-2 text-sm h-5">
-                                <p>🖂&nbsp;&nbsp;{dummyData.email}</p>
+                                <p>🖂&nbsp;&nbsp;{user.email}</p>
                             </div>
                             <div className="flex flex-row items-center gap-x-2 text-sm h-5">
-                                <p>☏&nbsp;&nbsp;{dummyData.phoneNumber}</p>
+                                <p>☏&nbsp;&nbsp;{user.phoneNumber}</p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-y-[2px]">
                             <Image 
-                            src={dummyData.image} 
+                            src={user.image} 
                             width={55}
                             height={55} 
                             alt="user photo" 
                             style={{objectFit: "cover"}}
+                            priority
                             className="w-[55px] h-[55px] shadow-sm rounded-sm"
                             />
                             <div>
-                                <p className="font-semibold">{fullName}</p>
-                                <p className="text-sm">{dummyData.position}</p>
+                                <p className="font-semibold">{user.firstName}&nbsp;{user.lastName}</p>
+                                <p className="text-sm">{user.position}</p>
                             </div>
-                            <p className="text-sm">{dummyData.company.toUpperCase()}</p>
+                            <p className="text-sm">{user.company.toUpperCase()}</p>
                         </div>
                     </div>
                     <div>
-                        <QRCodeSVG value={dummyData.user_link} size={100} fgColor="gray" />
+                        <QRCodeSVG value={user.user_link as string} size={100} fgColor="gray" />
                     </div>
                 </div> :
                 <div className="w-full h-full flex items-center justify-center">
