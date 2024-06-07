@@ -96,14 +96,16 @@ export const uploadImage = async (
 export const updateUserById = async (
   user_id: string,
   user: Users
-): Promise<void> => {
+): Promise<{ success: boolean; message: any }> => {
   try {
     const userCollection = collection(firebaseDb, "users");
     const userRef = doc(userCollection, user_id);
     await setDoc(userRef, { ...user }, { merge: true });
     console.log("Document updated with ID: ", user_id);
-  } catch (error) {
+    return { success: true, message: `Document updated with ID: ${user_id}` };
+  } catch (error: any) {
     console.error("Error updating document: ", error);
+    return { success: false, message: error };
   }
 };
 export const getUserBySubId = async (id: string): Promise<Users | null> => {
@@ -134,25 +136,26 @@ export const updateUserPrintStatusById = async (id: string): Promise<void> => {
   }
 };
 
-export const getUserDataByUserCode = async (userCode:string) : Promise<Users|null> => {
-	try {
-		const userCol = collection(firebaseDb, "users")
-		const q = query(userCol, where("userCode", "==", userCode), limit(1))
-		const document = await getDocs(q)
-		if (document.empty) {
-			return null;
-		}
-		const result : Users[] = []
-		document.forEach(doc => {
-			result.push(doc.data() as Users)
-		})
-		if (result.length === 0) {
-			return null;
-		}
-		return result[0]
-
-	} catch (error) {
-		console.error(error)
-		return null;
-	}
-}
+export const getUserDataByUserCode = async (
+  userCode: string
+): Promise<Users | null> => {
+  try {
+    const userCol = collection(firebaseDb, "users");
+    const q = query(userCol, where("userCode", "==", userCode), limit(1));
+    const document = await getDocs(q);
+    if (document.empty) {
+      return null;
+    }
+    const result: Users[] = [];
+    document.forEach((doc) => {
+      result.push(doc.data() as Users);
+    });
+    if (result.length === 0) {
+      return null;
+    }
+    return result[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

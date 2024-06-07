@@ -1,4 +1,5 @@
 export type Users = {
+  id?: string;
   company: string;
   position: string;
   firstName: string;

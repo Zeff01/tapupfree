@@ -8,8 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 const ActionPage = () => {
   const [link, setLink] = useState<string | undefined>();
   const [user, setUser] = useState<string | undefined>();
-  const router = useRouter()
-  const userCode = useSearchParams().get("userCode")
+  const router = useRouter();
+  const userCode = useSearchParams().get("userCode");
 
   useEffect(() => {
     // Directly retrieve the link and user code from localStorage
@@ -18,14 +18,6 @@ const ActionPage = () => {
     if (storedLink) setLink(storedLink);
     if (storedUser) setUser(storedUser);
   }, []);
-
-  if (!link) {
-    return (
-      <div className="text-center">
-        Loading link... If this persists, please check the local storage.
-      </div>
-    );
-  }
 
   const fetchUserData = async () => {
     try {
@@ -44,7 +36,7 @@ const ActionPage = () => {
   };
 
   const handlePrintQR = () => {
-    router.push(`/card/${userCode}`)
+    router.push(`/card/${userCode}`);
     // const qrCodeElement = document.getElementById("qrCodeElement");
     // if (qrCodeElement) {
     //   const printWindow = window.open("", "_blank");
@@ -57,6 +49,14 @@ const ActionPage = () => {
     //   printWindow?.close();
     // }
   };
+
+  if (!link) {
+    return (
+      <div className="text-center">
+        Loading link... If this persists, please check the local storage.
+      </div>
+    );
+  }
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">

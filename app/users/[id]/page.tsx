@@ -5,13 +5,18 @@ import Image from "next/image";
 import { Users } from "@/src/lib/firebase/store/users.type";
 import FieldwithLogo from "@/components/FieldwithLogo";
 
-const UserPage = () => {
+const UserPage = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
   const [userData, setUserData] = useState<Users | null>(null);
   const [user, setUser] = useState<string | undefined>();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userCode");
-    if (storedUser) setUser(storedUser);
+    if (storedUser) {
+      setUser(storedUser);
+      return;
+    }
+    setUser(id);
   }, []);
 
   const fetchUserData = async () => {
