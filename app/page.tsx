@@ -190,7 +190,7 @@ export default function Home() {
 
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold"
+            className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold"
           >
             Submit
           </button>
