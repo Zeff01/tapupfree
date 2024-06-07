@@ -2,7 +2,7 @@
 
 import { Users } from "@/src/lib/firebase/store/users.type";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Copy, Edit } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,64 +16,67 @@ import { Button } from "@/components/ui/button";
 
 import { MoreHorizontal } from "lucide-react";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export const columns: ColumnDef<Users>[] = [
   {
-    accessorKey: "company",
-    header: () => <div className="min-w-[10rem]">Company</div>,
+    accessorKey: "id",
+    header: () => <div className="min-w-[10rem]">Id</div>,
   },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <div className="min-w-[5rem]">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
-  },
+
   {
     accessorKey: "firstName",
     header: () => <div className="min-w-[10rem]">FirstName</div>,
   },
   {
     accessorKey: "lastName",
-    header: () => <div className="min-w-[10rem]">LastName</div>,
+    header: () => <div className="">LastName</div>,
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <div
+          className="min-w-[5rem] flex cursor-pointer"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email Address
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
   },
   {
     id: "actions",
+    header: () => <div className="text-center ">Actions</div>,
     cell: ({ row }) => {
       const link = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                navigator.clipboard.writeText(link.user_link as string);
-                toast.success("Copied!");
-              }}
+        <div className="flex gap-2 justify-center flex-nowrap ">
+          <Link href={`/update/${link.id}`}>
+            <Button
+              onClick={() => {}}
+              className="h-8 w-8 rounded-full"
+              variant="ghost"
+              size="icon"
             >
-              Copy Link
-            </DropdownMenuItem>
+              <Edit size={15} />
+            </Button>
+          </Link>
 
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            onClick={() => {
+              navigator.clipboard.writeText(link.user_link as string);
+              toast.success("Copied to clipboard");
+            }}
+          >
+            <Copy size={15} />
+          </Button>
+        </div>
       );
     },
   },
