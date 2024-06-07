@@ -23,11 +23,11 @@ export default function Print() {
 
     const fullName = `${dummyData.firstName} ${dummyData.lastName}`
 
-    const handleDownloadImage = () => {
+    const handleDownloadImage = async () => {
         const card = cardRef.current;
         if (!card) return
-        html2canvas(card, { scale: 2 }).then(async canvas => {
-          const imgData = await canvas.toDataURL('image/png');
+        await html2canvas(card, { scale: 2 }).then( canvas => {
+          const imgData = canvas.toDataURL('image/png');
       
           // Create a link element
           const link = document.createElement('a');
