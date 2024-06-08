@@ -22,6 +22,7 @@ export default function Card() {
     }
 
     useEffect(() => {
+        console.log("card effect")
         if (!userCode) return;
         userDataHandler()
     }, [userCode])
@@ -58,7 +59,7 @@ export default function Card() {
     }
 
     return (
-        <div className="bg-gray-200 w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-auto">
+        <div className="bg-gray-200 w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-hidden">
             <div ref={cardRef} className={`text-black dark:text-black relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
                 {
                     user ?                    
