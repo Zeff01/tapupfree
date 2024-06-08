@@ -58,8 +58,8 @@ export default function Card() {
     }
 
     return (
-        <div className="w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-auto">
-            <div ref={cardRef} className={`relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
+        <div className="bg-gray-200 w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-auto">
+            <div ref={cardRef} className={`text-black dark:text-black relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`} style={{backgroundColor: "white"}}>
                 {
                     user ?                    
                     <div className="w-full h-full flex flex-row gap-x-2 justify-between">
