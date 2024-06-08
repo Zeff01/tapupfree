@@ -2,7 +2,7 @@
 
 import { Users } from "@/src/lib/firebase/store/users.type";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Copy, Edit } from "lucide-react";
+import { ArrowUpDown, Copy, Edit, ImageDown, UserRoundSearch } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,6 +77,24 @@ export const columns: ColumnDef<Users>[] = [
           >
             <Copy size={15} />
           </Button>
+          <Link href={link.user_link}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"            
+              >
+              <UserRoundSearch size={15} />
+            </Button>
+          </Link>
+          <Link href={`/card/${link.userCode}`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              >
+              <ImageDown size={15} />
+            </Button>
+          </Link>
         </div>
       );
     },
