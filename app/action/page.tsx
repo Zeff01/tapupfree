@@ -33,7 +33,7 @@ const ActionPage = () => {
 		const storedUser = localStorage.getItem("userCode");
 		if (storedLink) setLink(storedLink);
 		if (storedUser) setUser(storedUser);
-	}, [fetchUserData]);
+	}, []);
 
 	const handlePrintQR = () => {
 		router.push(`/card/${userCode}`);
