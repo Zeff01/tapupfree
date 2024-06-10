@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Cropper from "@/app/users/components/Cropper";
 import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.upload";
+import { useRouter } from "next/navigation";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
