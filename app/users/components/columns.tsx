@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { createUserLink } from "@/lib/utils";
 
 export const columns: ColumnDef<Users>[] = [
   {
@@ -77,7 +78,7 @@ export const columns: ColumnDef<Users>[] = [
           >
             <Copy size={15} />
           </Button>
-          <Link href={link.user_link as string}>
+          <Link href={createUserLink(link.userCode as string)}>
             <Button
               variant="ghost"
               size="icon"
