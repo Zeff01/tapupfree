@@ -82,7 +82,7 @@ export const columns: ColumnDef<Users>[] = [
             >
               <UserRoundSearch size={15} />
             </Button>
-          </Link> */}
+          </Link>
           <Link href={`/card/${link.userCode}`}>
             <Button
               variant="ghost"
