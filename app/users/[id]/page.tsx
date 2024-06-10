@@ -40,7 +40,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
     if (user) {
       fetchUserData();
     }
-  }, [user, fetchUserData]);
+  }, [user]);
 
   const downloadVCard = () => {
     if (!userData) return;
