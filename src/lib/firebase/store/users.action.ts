@@ -64,6 +64,10 @@ export const getAllUsers = async (): Promise<Users[]> => {
 		const userCollection = collection(firebaseDb, "users");
 		const snapshot = await getDocs(userCollection);
 		const users: Users[] = snapshot.docs.map((doc) => doc.data() as Users);
+		// change link to user_link
+		users.forEach(async (user) => {
+			user.user_link = await createUserLink(user.userCode ?? "");
+		});
 		return users;
 	} catch (error) {
 		console.error("Error getting documents: ", error);
