@@ -4,12 +4,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
+import { LoaderCircle } from "lucide-react";
 // import Cropper from "../users/components/Cropper";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({}); // Properly typed as Record<string, string>
+  const [loading, setLoading] = useState(false)
   const router = useRouter();
 
   const validateForm = (elements: HTMLFormControlsCollection) => {
@@ -29,7 +31,7 @@ export default function Create() {
       setFormErrors(errors);
       return;
     }
-
+    setLoading(true) // load start
     const userInfo = await addUser({
       company: form.company.value,
       position: form.position.value,
@@ -41,7 +43,7 @@ export default function Create() {
       printStatus: false,
     });
     console.log(typeof userInfo, userInfo);
-
+    setLoading(false) // load ends
     if (userInfo) {
       localStorage.setItem("userLink", userInfo.user_link);
       localStorage.setItem("userCode", userInfo.userCode);
@@ -191,7 +193,14 @@ export default function Create() {
             type="submit"
             className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold"
           >
-            Submit
+            {
+              loading ?
+              <span className="w-full flex items-center justify-center">
+              <LoaderCircle className="animate-spin" />
+            </span> :
+              "Submit"
+            }              
+            
           </button>
         </form>
       </div>
