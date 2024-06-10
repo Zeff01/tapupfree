@@ -55,6 +55,7 @@ export const addUser = async (
       userCode,
       user_link,
     };
+    revalidateUserPath("/users");
     return userCodeLink;
   } catch (error) {
     console.error("Error adding document: ", error);
