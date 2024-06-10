@@ -8,7 +8,6 @@ import { Users } from "@/src/lib/firebase/store/users.type";
 import { useParams } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader";
 import Navbar from "@/components/ui/Navbar";
-import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 
 export default function Card() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -32,7 +31,7 @@ export default function Card() {
     console.log("card effect");
     if (!userCode) return;
     userDataHandler();
-  }, [userCode, userDataHandler]);
+  }, [userCode]);
 
   const handleDownloadImage = async () => {
     const card = cardRef.current;
@@ -97,16 +96,6 @@ export default function Card() {
                   &#128222; &nbsp;&nbsp;{user.phoneNumber}
                 </span>
               </div>
-
-              {/* <div>
-                <div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
-                  <p>🖂&nbsp;&nbsp;{user.email}</p>
-                </div>
-                <div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
-                  <p>☏&nbsp;&nbsp;{user.phoneNumber}</p>
-                </div>
-              </div> */}
-
               <div className="flex flex-col gap-y-[2px]">
                 {user.image && (
                   <Image

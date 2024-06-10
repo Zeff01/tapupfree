@@ -11,13 +11,6 @@ const ActionPage = () => {
   const router = useRouter();
   const userCode = useSearchParams().get("userCode");
 
-  useEffect(() => {
-    const storedLink = localStorage.getItem("userLink");
-    const storedUser = localStorage.getItem("userCode");
-    if (storedLink) setLink(storedLink);
-    if (storedUser) setUser(storedUser);
-  }, []);
-
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
@@ -37,6 +30,13 @@ const ActionPage = () => {
       console.error("Error fetching user data: ", error);
     }
   };
+
+  useEffect(() => {
+    const storedLink = localStorage.getItem("userLink");
+    const storedUser = localStorage.getItem("userCode");
+    if (storedLink) setLink(storedLink);
+    if (storedUser) setUser(storedUser);
+  }, []);
 
   const handlePrintQR = () => {
     router.push(`/card/${userCode}`);
