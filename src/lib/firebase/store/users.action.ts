@@ -21,7 +21,7 @@ type UserCodeLink = {
 	userCode: string;
 	user_link: string;
 };
-export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
+export const addUser = async (user: Omit<Users, "user_link">): Promise<UserCodeLink | null> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
 
@@ -97,7 +97,7 @@ export const uploadImage = async (
 };
 export const updateUserById = async (
 	user_id: string,
-	user: Users
+	user: Partial<Users>
 ): Promise<{ success: boolean; message: any }> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
