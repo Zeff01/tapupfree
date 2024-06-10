@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/ui/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 
-const lato = Lato({weight: "400", subsets: ["latin"]})
+const lato = Lato({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={lato.className}>
-        <Navbar />
         <main>{children}</main>
         <ToastContainer />
       </body>
