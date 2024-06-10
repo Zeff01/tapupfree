@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import MoonLoader from "react-spinners/MoonLoader";
 
 const ActionPage = () => {
   const [link, setLink] = useState<string | undefined>();
@@ -19,11 +20,9 @@ const ActionPage = () => {
 
   const fetchUserData = async () => {
     try {
-      console.log("Fetching user data...");
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_LINK}/users/${user}`
       );
-      console.log("response:", response);
       if (!response) {
         throw new Error("No response from server");
       }
@@ -45,15 +44,22 @@ const ActionPage = () => {
 
   if (!link) {
     return (
-      <div className="text-center">
-        Loading link... If this persists, please check the local storage.
+      <div className="w-full h-full flex items-center justify-center">
+        <MoonLoader
+          loading={true}
+          color="gray"
+          size={40}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          speedMultiplier={0.5}
+        />
       </div>
     );
   }
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
-      <div className="p-6 shadow-lg rounded-lg">
+      <div className="p-6  rounded-lg">
         <Image
           src="/assets/zwift-logo.png"
           alt="Company Logo"
