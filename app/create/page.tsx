@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
-import Cropper from "../users/components/Cropper";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
@@ -70,12 +69,7 @@ export default function Create() {
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
       <div className="w-full max-w-sm">
-          <Cropper
-            setFileName={() => {}}
-            aspect={1 / 1}
-            changeImage={(p) => console.log(p)}
-            circularCrop={true}
-            />
+          
         <div className="text-center mb-6 ">
           <Image
             src="/assets/zwift-logo.png"
