@@ -2,11 +2,12 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
+import { addUser } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
 import { LoaderCircle } from "lucide-react";
 import Cropper from "../users/components/Cropper";
 import { Switch } from "@/components/ui/switch";
+import { uploadImage } from "@/src/lib/firebase/store/users.upload";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);

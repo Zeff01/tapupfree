@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { Photo } from "@/src/lib/firebase/store/users.type";
-import { uploadImage } from "@/src/lib/firebase/store/users.action";
+import { uploadImage } from "@/src/lib/firebase/store/users.upload";
 import { LoaderCircle } from "lucide-react";
 
 import ReactCrop, {

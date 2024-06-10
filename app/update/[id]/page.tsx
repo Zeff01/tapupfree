@@ -2,15 +2,16 @@
 import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import Image from "next/image";
 import {
-  addUser,
   getUserBySubId,
-  uploadImage,
   updateUserById,
 } from "@/src/lib/firebase/store/users.action";
 import { Photo, Users } from "@/src/lib/firebase/store/users.type";
-import { Input } from "postcss";
 import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
+import Cropper from "@/app/users/components/Cropper";
+import { Switch } from "@/components/ui/switch";
+import { uploadImage } from "@/src/lib/firebase/store/users.upload";
+import { useRouter } from "next/navigation";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -18,14 +19,21 @@ export default function Update({ params }: { params: { id: string } }) {
   const [user, setUser] = useState<Users | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState({});
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [imagePickerType, setImagePickerType] = useState<"advanced" | "basic">(
+    "advanced"
+  );
 
   useEffect(() => {
     const getUser = async () => {
+      setIsLoading(true);
       const getUser = await getUserBySubId(id);
       if (!getUser) return;
 
       setUser(getUser);
       setImageUrl(getUser.image);
+      setIsLoading(false);
     };
     getUser();
   }, []);
@@ -46,6 +54,7 @@ export default function Update({ params }: { params: { id: string } }) {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     const form = event.currentTarget;
     const errors = validateForm(form.elements);
     if (Object.keys(errors).length > 0) {
@@ -69,10 +78,12 @@ export default function Update({ params }: { params: { id: string } }) {
     }
 
     toast.success(userInfo.message);
+    router.push("/users");
   };
 
   const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      setIsLoading(true);
       const file = event.target.files[0];
       setPhoto({
         preview: URL.createObjectURL(file),
@@ -83,12 +94,32 @@ export default function Update({ params }: { params: { id: string } }) {
         preview: URL.createObjectURL(file),
         raw: file,
       });
+
       if (dl_url) setImageUrl(dl_url);
+      setIsLoading(false);
     }
   };
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <div className="w-full flex flex-row justify-end">
+        <div className="flex flex-col w-[150px] bg-custom-purple p-1 rounded-md">
+          <p>Image Picker Type</p>
+          <div className="w-full flex flex-row justify-between gap-x-1">
+            <p>{imagePickerType}</p>
+            <Switch
+              checked={Boolean(imagePickerType === "advanced")}
+              onCheckedChange={(c) => {
+                if (c) {
+                  setImagePickerType("advanced");
+                  return;
+                }
+                setImagePickerType("basic");
+              }}
+            />
+          </div>
+        </div>
+      </div>
       <div className="w-full max-w-sm">
         <div className="text-center mb-6 ">
           <Image
@@ -111,46 +142,58 @@ export default function Update({ params }: { params: { id: string } }) {
               ))}
             </div>
           )}
+
           <div className="flex flex-col items-center">
-            <div className="relative">
-              <div className="rounded-full border border-border-input  p-1">
-                {photo || imageUrl ? (
-                  <Image
-                    src={photo?.preview || imageUrl || ""}
-                    alt="Profile"
-                    className="w-28 h-28 rounded-full"
-                    width={30}
-                    height={30}
-                  />
-                ) : (
-                  <div className="w-28 h-28 rounded-full bg-background-input border-border-input flex items-center justify-center">
+            {imagePickerType === "advanced" ? (
+              <Cropper
+                setImageUrl={setImageUrl}
+                setPhoto={setPhoto}
+                photo={photo}
+                aspect={1}
+                changeImage={(i) => console.log(i)}
+                circularCrop
+              />
+            ) : (
+              <div className="relative">
+                <div className="rounded-full border border-border-input  p-1">
+                  {photo || imageUrl ? (
                     <Image
-                      src={"/assets/imageicon.png"}
-                      alt="Company Logo"
+                      src={photo?.preview || imageUrl || ""}
+                      alt="Profile"
+                      className="w-28 h-28 rounded-full"
                       width={30}
                       height={30}
-                      priority
-                      className="mx-auto"
                     />
-                    <div className="flex justify-center items-center w-8 h-8 border rounded-full absolute bottom-0 right-0 bg-background-input border-border-input">
+                  ) : (
+                    <div className="w-28 h-28 rounded-full bg-background-input border-border-input flex items-center justify-center">
                       <Image
-                        src="/assets/plusicon.png"
-                        alt="Add Icon"
-                        width={14}
-                        height={14}
+                        src={"/assets/imageicon.png"}
+                        alt="Company Logo"
+                        width={30}
+                        height={30}
                         priority
+                        className="mx-auto"
                       />
+                      <div className="flex justify-center items-center w-8 h-8 border rounded-full absolute bottom-0 right-0 bg-background-input border-border-input">
+                        <Image
+                          src="/assets/plusicon.png"
+                          alt="Add Icon"
+                          width={14}
+                          height={14}
+                          priority
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
               </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
+            )}
           </div>
           {[
             {
@@ -213,7 +256,8 @@ export default function Update({ params }: { params: { id: string } }) {
 
           <button
             type="submit"
-            className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold"
+            disabled={isLoading}
+            className="w-full px-4 py-4 bg-[#6150EB] disabled:bg-[#6150EB]/50 disabled:cursor-not-allowed hover:bg-[#6250ebc0] rounded-md font-bold"
           >
             Update
           </button>
