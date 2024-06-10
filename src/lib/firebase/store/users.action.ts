@@ -1,5 +1,3 @@
-"use server";
-
 import {
   collection,
   addDoc,
@@ -14,10 +12,12 @@ import {
   query,
   limit,
 } from "firebase/firestore";
-import { firebaseDb } from "../config/firebase";
-import { Users } from "./users.type";
+import { firebaseDb, firebaseStorage } from "../config/firebase";
+import { Photo, Users } from "./users.type";
 import { createUserLink } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import revalidateUserPath from "./user.revalidate";
 
 type UserCodeLink = {
   userCode: string;
@@ -88,7 +88,7 @@ export const updateUserById = async (
     const userRef = doc(userCollection, user_id);
     await setDoc(userRef, { ...user }, { merge: true });
     console.log("Document updated with ID: ", user_id);
-    revalidatePath("/users");
+    revalidateUserPath("/users");
     return { success: true, message: `Document updated with ID: ${user_id}` };
   } catch (error: any) {
     console.error("Error updating document: ", error);
@@ -109,6 +109,28 @@ export const getUserBySubId = async (id: string): Promise<Users | null> => {
   } catch (error) {
     console.error("Error getting document: ", error);
     return null;
+  }
+};
+
+export const uploadImage = async (
+  image: Photo | null
+): Promise<string | null> => {
+  try {
+    const filename = self.crypto.randomUUID();
+    const imageRaw = image?.raw;
+
+    if (imageRaw) {
+      const storageRef = ref(firebaseStorage, `users/${filename}.jpg`);
+      await uploadBytesResumable(storageRef, imageRaw);
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log("File available at", downloadURL);
+      return downloadURL;
+    }
+
+    return "";
+  } catch (error) {
+    console.error("Error uploading image: ", error);
+    return "";
   }
 };
 

@@ -7,7 +7,7 @@ import { Photo } from "@/src/lib/firebase/store/users.type";
 import { LoaderCircle } from "lucide-react";
 import Cropper from "../users/components/Cropper";
 import { Switch } from "@/components/ui/switch";
-import { uploadImage } from "@/src/lib/firebase/store/users.upload";
+import { uploadImage } from "@/src/lib/firebase/store/users.action";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);

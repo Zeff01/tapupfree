@@ -70,114 +70,116 @@ const UserPage = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-6 ">
-          <Image
-            src="/assets/zwift-logo.png"
-            alt="Company Logo"
-            width={150}
-            height={150}
-            priority
-            className="mx-auto mb-12"
-          />
-          <h2 className="text-lg font-semibold mt-2">Personal Portfolio</h2>
-        </div>
-        {userData ? (
-          <div className="text-center mb-6">
-            {userData.image ? (
-              <Image
-                src={userData.image}
-                alt="Profile"
-                className="w-32 h-32 rounded-full mx-auto"
-                width={128}
-                height={128}
-              />
-            ) : (
-              <Image
-                src="/assets/image-placeholder.svg"
-                alt="No profile"
-                width={128}
-                height={128}
-                priority
-                className="mx-auto"
-              />
-            )}
-
-            <h1 className="text-xl font-semibold mt-4">
-              {userData.firstName} {userData.lastName}
-            </h1>
-            <h1 className="text-lg font-semibold text-[#767676]">
-              {userData.email}
-            </h1>
-
-            <div className="flex flex-col  mx-auto my-8 ">
-              <div className="mx-auto flex flex-col gap-8">
-                <FieldwithLogo
-                  imgUrl={"/assets/phoneLogo.png"}
-                  value={userData.phoneNumber}
-                />
-                <FieldwithLogo
-                  imgUrl={"/assets/companyLogo.png"}
-                  value={userData.company}
-                />
-                <FieldwithLogo
-                  imgUrl={"/assets/positionLogo.png"}
-                  value={userData.position}
-                />
-              </div>
-            </div>
-
-            <div className="mt-8 flex justify-center">
-              <button
-                className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
-                onClick={downloadVCard}
-              >
-                Save Contact
-              </button>
-            </div>
+    <>
+      <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+        <div className="w-full max-w-sm">
+          <div className="text-center mb-6 ">
+            <Image
+              src="/assets/zwift-logo.png"
+              alt="Company Logo"
+              width={150}
+              height={150}
+              priority
+              className="mx-auto mb-12"
+            />
+            <h2 className="text-lg font-semibold mt-2">Personal Portfolio</h2>
           </div>
-        ) : (
-          <div className="w-[384px] h-[596px]">
+          {userData ? (
             <div className="text-center mb-6">
-              <CircleUser size={120} className="mx-auto text-[#767676]" />
-              <h1 className="text-xl font-semibold mt-4 w-[100px] bg-[#767676] rounded-xl mx-auto my-2">
-                &nbsp;
+              {userData.image ? (
+                <Image
+                  src={userData.image}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full mx-auto"
+                  width={128}
+                  height={128}
+                />
+              ) : (
+                <Image
+                  src="/assets/image-placeholder.svg"
+                  alt="No profile"
+                  width={128}
+                  height={128}
+                  priority
+                  className="mx-auto"
+                />
+              )}
+
+              <h1 className="text-xl font-semibold mt-4">
+                {userData.firstName} {userData.lastName}
               </h1>
-              <h1 className="text-lg font-semibold w-[200px] bg-[#767676] rounded-xl mx-auto">
-                &nbsp;
+              <h1 className="text-lg font-semibold text-[#767676]">
+                {userData.email}
               </h1>
 
               <div className="flex flex-col  mx-auto my-8 ">
                 <div className="mx-auto flex flex-col gap-8">
                   <FieldwithLogo
                     imgUrl={"/assets/phoneLogo.png"}
-                    value={"+639*********"}
+                    value={userData.phoneNumber}
                   />
                   <FieldwithLogo
                     imgUrl={"/assets/companyLogo.png"}
-                    value={".........."}
+                    value={userData.company}
                   />
                   <FieldwithLogo
                     imgUrl={"/assets/positionLogo.png"}
-                    value={".........."}
+                    value={userData.position}
                   />
                 </div>
               </div>
 
               <div className="mt-8 flex justify-center">
                 <button
-                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
-                  disabled
+                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+                  onClick={downloadVCard}
                 >
                   Save Contact
                 </button>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-    </main>
+          ) : (
+            <div className="w-[384px] h-[596px]">
+              <div className="text-center mb-6">
+                <CircleUser size={120} className="mx-auto text-[#767676]" />
+                <h1 className="text-xl font-semibold mt-4 w-[100px] bg-[#767676] rounded-xl mx-auto my-2">
+                  &nbsp;
+                </h1>
+                <h1 className="text-lg font-semibold w-[200px] bg-[#767676] rounded-xl mx-auto">
+                  &nbsp;
+                </h1>
+
+                <div className="flex flex-col  mx-auto my-8 ">
+                  <div className="mx-auto flex flex-col gap-8">
+                    <FieldwithLogo
+                      imgUrl={"/assets/phoneLogo.png"}
+                      value={"+639*********"}
+                    />
+                    <FieldwithLogo
+                      imgUrl={"/assets/companyLogo.png"}
+                      value={".........."}
+                    />
+                    <FieldwithLogo
+                      imgUrl={"/assets/positionLogo.png"}
+                      value={".........."}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-8 flex justify-center">
+                  <button
+                    className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
+                    disabled
+                  >
+                    Save Contact
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 };
 
