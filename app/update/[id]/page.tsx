@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
 import Cropper from "@/app/users/components/Cropper";
 import { Switch } from "@/components/ui/switch";
-import { uploadImage } from "@/src/lib/firebase/store/users.upload";
+import { uploadImage } from "@/src/lib/firebase/store/users.action";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/ui/Navbar";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -102,6 +103,7 @@ export default function Update({ params }: { params: { id: string } }) {
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <Navbar />
       <div className="w-full flex flex-row justify-end">
         <div className="flex flex-col w-[150px] bg-custom-purple p-1 rounded-md">
           <p>Image Picker Type</p>
