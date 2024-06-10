@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
 import { LoaderCircle } from "lucide-react";
-// import Cropper from "../users/components/Cropper";
+import Cropper from "../users/components/Cropper";
+import { Switch } from "@/components/ui/switch";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
@@ -13,6 +14,7 @@ export default function Create() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({}); // Properly typed as Record<string, string>
   const [loading, setLoading] = useState(false)
   const router = useRouter();
+  const [imagePickerType, setImagePickerType] = useState<"advanced"|"basic">("advanced")
 
   const validateForm = (elements: HTMLFormControlsCollection) => {
     const newErrors: Record<string, string> = {};
@@ -71,13 +73,24 @@ export default function Create() {
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <div className="w-full flex flex-row justify-end">
+        <div className="flex flex-col w-[150px] bg-custom-purple p-1 rounded-md">
+          <p>Image Picker Type</p>
+          <div className="w-full flex flex-row justify-between gap-x-1">
+          <p>{imagePickerType}</p>
+          <Switch checked={Boolean(imagePickerType === "advanced")} onCheckedChange={(c) => {
+            if (c) {
+            setImagePickerType("advanced")
+            return
+            }
+            setImagePickerType("basic")
+            }} 
+            />
+          </div>
+        </div>
+        </div>
       <div className="w-full max-w-sm">
-          {/* <Cropper 
-          setFileName={() => {}} 
-          aspect={1}
-          changeImage={(i) => console.log(i)}
-          circularCrop
-          />  */}
+          
         <div className="text-center mb-6 ">
           <Image
             src="/assets/zwift-logo.png"
@@ -100,6 +113,16 @@ export default function Create() {
             </div>
           )}
           <div className="flex flex-col items-center">
+            {
+              imagePickerType === "advanced" ?
+              <Cropper 
+              setImageUrl={setImageUrl}
+              setPhoto={setPhoto}
+              photo={photo}
+              aspect={1}
+              changeImage={(i) => console.log(i)}
+              circularCrop
+              /> :
             <div className="relative">
               <div className="rounded-full border border-border-input  p-1">
                 {photo ? (
@@ -137,6 +160,8 @@ export default function Create() {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
+            
+            }
           </div>
 
           {[

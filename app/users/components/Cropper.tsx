@@ -5,6 +5,9 @@ import { createPortal } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
+import { Photo } from '@/src/lib/firebase/store/users.type';
+import { uploadImage } from '@/src/lib/firebase/store/users.action';
+import { LoaderCircle } from 'lucide-react';
 
 import ReactCrop, {
   centerCrop,
@@ -42,7 +45,9 @@ function centerAspectCrop(
 }
 
 type CropperProps = {
-  setFileName: Dispatch<SetStateAction<string>>;
+  setImageUrl: Dispatch<SetStateAction<string|null>>;
+  photo: null|Photo;
+  setPhoto: Dispatch<SetStateAction<Photo|null>>;
   aspect: number;
   changeImage(img: string): void;
   maxHeight?: number;
@@ -50,9 +55,10 @@ type CropperProps = {
 };
 
 export default function Cropper({
-  setFileName,
+  setImageUrl,
+  photo,
+  setPhoto,
   aspect,
-  changeImage,
   maxHeight,
   circularCrop = false,
 }: CropperProps) {
@@ -67,6 +73,7 @@ export default function Cropper({
   //   const [aspect, setAspect] = useState<number | undefined>(16 / 6)
   const [showModal, setShowModal] = useState(false);
   const [csr, SetCsr] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   function toggleModal() {
     setShowModal((m) => !m);
@@ -75,7 +82,6 @@ export default function Cropper({
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
       setCrop(undefined); // Makes crop preview update between images.
-      setFileName(e.target.files[0].name);
       //   toggleModal()
       const reader = new FileReader();
       reader.addEventListener('load', () => {
@@ -92,6 +98,69 @@ export default function Cropper({
     }
   }
 
+  // async function onDownloadCropClick() {
+  //   const image = imgRef.current;
+  //   const previewCanvas = previewCanvasRef.current;
+  //   if (!image || !previewCanvas || !completedCrop) {
+  //     throw new Error('Crop canvas does not exist');
+  //   }
+
+  //   // This will size relative to the uploaded image
+  //   // size. If you want to size according to what they
+  //   // are looking at on screen, remove scaleX + scaleY
+  //   const scaleX = image.naturalWidth / image.width;
+  //   const scaleY = image.naturalHeight / image.height;
+
+  //   const offscreen = new OffscreenCanvas(
+  //     completedCrop.width * scaleX,
+  //     completedCrop.height * scaleY
+  //   );
+  //   const ctx = offscreen.getContext('2d');
+  //   if (!ctx) {
+  //     throw new Error('No 2d context');
+  //   }
+
+  //   ctx.drawImage(
+  //     previewCanvas,
+  //     0,
+  //     0,
+  //     previewCanvas.width,
+  //     previewCanvas.height,
+  //     0,
+  //     0,
+  //     offscreen.width,
+  //     offscreen.height
+  //   );
+  //   // You might want { type: "image/jpeg", quality: <0 to 1> } to
+  //   // reduce image size
+  //   const blob = await offscreen.convertToBlob({
+  //     type: 'image/png',
+  //   });
+  //   const reader = new FileReader();
+  //   reader.onload = (event) => {
+  //     const fileAsDataURL = event.target?.result;
+  //     if (typeof fileAsDataURL === 'string') {
+  //       // You can use fileAsDataURL as needed
+  //       console.log({ fileAsDataURL });
+  //       changeImage(fileAsDataURL);
+
+  //       toggleModal();
+  //     }
+  //   };
+  //   reader.readAsDataURL(blob);
+
+  //   if (blobUrlRef.current) {
+  //     URL.revokeObjectURL(blobUrlRef.current);
+  //   }
+  //   blobUrlRef.current = URL.createObjectURL(blob);
+
+  //   // ---THIS IS USED TO DOWNLOAD THE CROPPED IMAGES---
+  //   // if (hiddenAnchorRef.current) {
+  //   //   hiddenAnchorRef.current.href = blobUrlRef.current
+  //   //   hiddenAnchorRef.current.click()
+  //   // }
+  // }
+
   async function onDownloadCropClick() {
     const image = imgRef.current;
     const previewCanvas = previewCanvasRef.current;
@@ -99,9 +168,6 @@ export default function Cropper({
       throw new Error('Crop canvas does not exist');
     }
 
-    // This will size relative to the uploaded image
-    // size. If you want to size according to what they
-    // are looking at on screen, remove scaleX + scaleY
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
 
@@ -125,20 +191,31 @@ export default function Cropper({
       offscreen.width,
       offscreen.height
     );
-    // You might want { type: "image/jpeg", quality: <0 to 1> } to
-    // reduce image size
+
     const blob = await offscreen.convertToBlob({
       type: 'image/png',
     });
+
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const fileAsDataURL = event.target?.result;
       if (typeof fileAsDataURL === 'string') {
-        // You can use fileAsDataURL as needed
-        console.log({ fileAsDataURL });
-        changeImage(fileAsDataURL);
-
-        toggleModal();
+        const file = new File([blob], 'cropped-image.png', { type: 'image/png' });
+        try {
+          setLoading(true)
+          const dl_url = await uploadImage({
+            preview: URL.createObjectURL(file),
+            raw: file,
+            });
+            setPhoto({ preview: fileAsDataURL, raw: file });
+            if (dl_url) setImageUrl(dl_url);
+        } catch (error) {
+          console.error(error, "failed to upload image")
+        } finally {
+          setLoading(false)
+          toggleModal();
+        }
+        
       }
     };
     reader.readAsDataURL(blob);
@@ -147,12 +224,6 @@ export default function Cropper({
       URL.revokeObjectURL(blobUrlRef.current);
     }
     blobUrlRef.current = URL.createObjectURL(blob);
-
-    // ---THIS IS USED TO DOWNLOAD THE CROPPED IMAGES---
-    // if (hiddenAnchorRef.current) {
-    //   hiddenAnchorRef.current.href = blobUrlRef.current
-    //   hiddenAnchorRef.current.click()
-    // }
   }
 
   useDebounceEffect(
@@ -195,6 +266,14 @@ export default function Cropper({
         onClick={toggleModal}
         placeholder='cropper'        
       />
+      {
+        photo ?
+        <img
+          src={photo.preview}
+          alt="Profile"
+          className="w-28 h-28 rounded-full"
+        /> :
+        <>
         <Image
           src="/assets/imageicon.png"
           alt="Company Logo"
@@ -202,7 +281,7 @@ export default function Cropper({
           height={30}
           priority
           className="mx-auto pointer-events-none "
-        />
+          />
         <div className=" pointer-events-none flex justify-center items-center w-8 h-8 border rounded-full absolute bottom-0 right-0 bg-background-input border-border-input">
           <Image
             src="/assets/plusicon.png"
@@ -210,8 +289,11 @@ export default function Cropper({
             width={14}
             height={14}
             priority
-          />
+            />
         </div>
+        </>
+      }
+        
       </div>
       
 
@@ -259,7 +341,13 @@ export default function Cropper({
                           onClick={onDownloadCropClick}
                           className="w-20"
                         >
-                          Save
+                          {
+                            loading ?
+                            <span className="w-full flex items-center justify-center">
+                            <LoaderCircle className="animate-spin" />
+                            </span> :
+                            "Save"
+                          }      
                         </Button>
                       )}
                     </div>
