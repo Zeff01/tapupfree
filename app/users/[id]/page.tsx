@@ -4,6 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { Users } from "@/src/lib/firebase/store/users.type";
 import FieldwithLogo from "@/components/FieldwithLogo";
+import { CircleUser } from "lucide-react";
 
 const UserPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -135,7 +136,43 @@ const UserPage = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         ) : (
-          <div>Loading Animation here</div>
+          <div className="w-[384px] h-[596px]">
+<div className="text-center mb-6">
+          <CircleUser size={120} className="mx-auto text-[#767676]" />
+            <h1 className="text-xl font-semibold mt-4 w-[100px] bg-[#767676] rounded-xl mx-auto my-2">
+              &nbsp;
+            </h1>
+            <h1 className="text-lg font-semibold w-[200px] bg-[#767676] rounded-xl mx-auto">
+              &nbsp;
+            </h1>
+
+            <div className="flex flex-col  mx-auto my-8 ">
+              <div className="mx-auto flex flex-col gap-8">
+                <FieldwithLogo
+                  imgUrl={"/assets/phoneLogo.png"}
+                  value={"+639*********"}
+                />
+                <FieldwithLogo
+                  imgUrl={"/assets/companyLogo.png"}
+                  value={".........."}
+                />
+                <FieldwithLogo
+                  imgUrl={"/assets/positionLogo.png"}
+                  value={".........."}
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 flex justify-center">
+              <button
+                className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
+                disabled
+              >
+                Save Contact
+              </button>
+            </div>
+          </div>
+          </div>
         )}
       </div>
     </main>

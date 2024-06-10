@@ -1,18 +1,17 @@
-"use client";
+"use client"
 import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
 import { Users } from "@/src/lib/firebase/store/users.type";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader";
 
 export default function Card() {
 	const cardRef = useRef<HTMLDivElement>(null);
 	const [user, setUser] = useState<Users | null>(null);
 	const { userCode } = useParams() as { userCode: string };
-	const router = useRouter();
 
 	const userDataHandler = async () => {
 		const data = await getUserDataByUserCode(userCode);
@@ -60,12 +59,8 @@ export default function Card() {
 		});
 	};
 
-	const handleBackToHome = () => {
-		router.push("/");
-	};
-
 	return (
-		<div className="bg-gray-200 w-full h-screen flex flex-col items-center px-2 py-12 gap-y-4 overflow-y-hidden">
+		<div className="bg-custom-black w-full h-screen flex flex-col items-center px-2 py-16 gap-y-4 overflow-y-hidden">
 			<div
 				ref={cardRef}
 				className={`text-black dark:text-black relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`}
@@ -75,10 +70,10 @@ export default function Card() {
 					<div className="w-full h-full flex flex-row gap-x-2 justify-between">
 						<div className="flex-grow flex flex-col justify-between">
 							<div>
-								<div className="flex flex-row items-center gap-x-2 text-sm h-5">
+								<div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
 									<p>🖂&nbsp;&nbsp;{user.email}</p>
 								</div>
-								<div className="flex flex-row items-center gap-x-2 text-sm h-5">
+								<div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
 									<p>☏&nbsp;&nbsp;{user.phoneNumber}</p>
 								</div>
 							</div>
@@ -86,21 +81,21 @@ export default function Card() {
 								{user.image && (
 									<Image
 										src={user.image}
-										width={55}
-										height={55}
+										width={70}
+										height={70}
 										alt="user photo"
 										style={{ objectFit: "cover" }}
 										priority
-										className="w-[55px] h-[55px] shadow-sm rounded-full"
+										className="w-[70px] h-[70px] shadow-sm rounded-full"
 									/>
 								)}
 								<div>
-									<p className="font-semibold">
+									<p className="font-semibold text-sm">
 										{user.firstName}&nbsp;{user.lastName}
 									</p>
-									<p className="text-sm">{user.position}</p>
+									<p className="text-[12px]">{user.position}</p>
 								</div>
-								<p className="text-sm">{user.company.toUpperCase()}</p>
+								<p className="text-[12px]">{user.company}</p>
 							</div>
 						</div>
 						<div>
@@ -122,17 +117,10 @@ export default function Card() {
 			</div>
 			<button
 				onClick={handleDownloadImage}
-				className="bg-green-300 px-6 py-2 font-semibold rounded-md shadow-md active:scale-95 transition-all duration-150 disabled:opacity-50"
+				className="bg-custom-purple text-white px-6 py-2 font-semibold rounded-md shadow-md active:scale-95 transition-all duration-150 disabled:opacity-50"
 				disabled={Boolean(!user)}
 			>
 				Convert to PNG
-			</button>
-			<button
-				onClick={handleBackToHome}
-				className="mt-auto bg-green-300 px-6 py-2 font-semibold rounded-md shadow-md active:scale-95 transition-all duration-150 disabled:opacity-50"
-				disabled={Boolean(!user)}
-			>
-				Back to Home
 			</button>
 		</div>
 	);

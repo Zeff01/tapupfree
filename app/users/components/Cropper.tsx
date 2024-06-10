@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { createPortal } from 'react-dom';

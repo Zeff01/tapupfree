@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useState, FormEvent, ChangeEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -101,7 +101,7 @@ export default function Create() {
             <div className="relative">
               <div className="rounded-full border border-border-input  p-1">
                 {photo ? (
-                  <img
+                  <Image
                     src={photo.preview}
                     alt="Profile"
                     className="w-28 h-28 rounded-full"
