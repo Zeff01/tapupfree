@@ -14,9 +14,8 @@ import {
   query,
   limit,
 } from "firebase/firestore";
-import { firebaseDb, firebaseStorage } from "../config/firebase";
-import { Photo, Users } from "./users.type";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { firebaseDb } from "../config/firebase";
+import { Users } from "./users.type";
 import { createUserLink } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 
@@ -79,27 +78,7 @@ export const getAllUsers = async (): Promise<Users[]> => {
     return [];
   }
 };
-export const uploadImage = async (
-  image: Photo | null
-): Promise<string | null> => {
-  try {
-    const filename = self.crypto.randomUUID();
-    const imageRaw = image?.raw;
 
-    if (imageRaw) {
-      const storageRef = ref(firebaseStorage, `users/${filename}.jpg`);
-      await uploadBytesResumable(storageRef, imageRaw);
-      const downloadURL = await getDownloadURL(storageRef);
-      console.log("File available at", downloadURL);
-      return downloadURL;
-    }
-
-    return "";
-  } catch (error) {
-    console.error("Error uploading image: ", error);
-    return "";
-  }
-};
 export const updateUserById = async (
   user_id: string,
   user: Partial<Users>
