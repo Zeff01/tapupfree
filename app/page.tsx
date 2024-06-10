@@ -13,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+    <main className="  flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
       <Image
         src="/assets/zwift-logo.png"
         alt="Company Logo"
@@ -22,18 +22,20 @@ export default function Home() {
         priority
         className="mx-auto mb-8"
       />
-      <button
-        onClick={navigateToCreate}
-        className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
-      >
-        Create Digital Business Card
-      </button>
-      <button
-        onClick={navigateToTable}
-        className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
-      >
-        Go to Users Table
-      </button>
+      <div className="max-w-sm w-full">
+        <button
+          onClick={navigateToCreate}
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+        >
+          Create Digital Business Card
+        </button>
+        <button
+          onClick={navigateToTable}
+          className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+        >
+          Go to Users Table
+        </button>
+      </div>
     </main>
   );
 }

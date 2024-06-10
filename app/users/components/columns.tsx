@@ -2,19 +2,14 @@
 
 import { Users } from "@/src/lib/firebase/store/users.type";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Copy, Edit, ImageDown, UserRoundSearch } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
+  ArrowUpDown,
+  Copy,
+  Edit,
+  ImageDown,
+  UserRoundSearch,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import { MoreHorizontal } from "lucide-react";
 import { toast } from "react-toastify";
 import Link from "next/link";
 
@@ -51,6 +46,7 @@ export const columns: ColumnDef<Users>[] = [
     header: () => <div className="text-center ">Actions</div>,
     cell: ({ row }) => {
       const link = row.original;
+      console.log("link:", link);
       if (link.id === "LanXgtZFYp7je3p9imBE") console.log(link);
 
       return (
@@ -77,21 +73,21 @@ export const columns: ColumnDef<Users>[] = [
           >
             <Copy size={15} />
           </Button>
-          <Link href={link.user_link as string}>
+          {/* <Link href={link.user_link as string}>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-full"            
-              >
+              className="h-8 w-8 rounded-full"
+            >
               <UserRoundSearch size={15} />
             </Button>
-          </Link>
+          </Link> */}
           <Link href={`/card/${link.userCode}`}>
             <Button
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full"
-              >
+            >
               <ImageDown size={15} />
             </Button>
           </Link>
