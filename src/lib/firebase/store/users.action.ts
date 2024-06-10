@@ -15,12 +15,13 @@ import {
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { createUserLink } from "@/lib/utils";
 
 type UserCodeLink = {
 	userCode: string;
 	user_link: string;
 };
-export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
+export const addUser = async (user: Omit<Users, "user_link">): Promise<UserCodeLink | null> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
 
@@ -42,10 +43,7 @@ export const addUser = async (user: Users): Promise<UserCodeLink | null> => {
 
 			// update the user with the final_subId
 			const userRef = doc(userCollection, docRef.id);
-			const link = process.env.NEXT_PUBLIC_BASE_LINK;
-			console.log("link", link);
-			user_link = `{BASE_LINK}/users/${userCode}`;
-			await updateDoc(userRef, { userCode, user_link, id: full_id });
+			await updateDoc(userRef, { userCode, id: full_id });
 		}
 		console.log("Document written with ID: ", userCode, user_link);
 
@@ -66,6 +64,10 @@ export const getAllUsers = async (): Promise<Users[]> => {
 		const userCollection = collection(firebaseDb, "users");
 		const snapshot = await getDocs(userCollection);
 		const users: Users[] = snapshot.docs.map((doc) => doc.data() as Users);
+		// change link to user_link
+		users.forEach(async (user) => {
+			user.user_link = await createUserLink(user.userCode ?? "");
+		});
 		return users;
 	} catch (error) {
 		console.error("Error getting documents: ", error);
@@ -95,7 +97,7 @@ export const uploadImage = async (
 };
 export const updateUserById = async (
 	user_id: string,
-	user: Users
+	user: Partial<Users>
 ): Promise<{ success: boolean; message: any }> => {
 	try {
 		const userCollection = collection(firebaseDb, "users");
@@ -153,7 +155,13 @@ export const getUserDataByUserCode = async (
 		if (result.length === 0) {
 			return null;
 		}
-		return result[0];
+
+		const link = await createUserLink(userCode);
+		const finalData = {
+			...result[0],
+			user_link: link,
+		};
+		return finalData;
 	} catch (error) {
 		console.error(error);
 		return null;
