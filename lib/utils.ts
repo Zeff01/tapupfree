@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export const createUserLink = async (userCode: string) => {
+export const createUserLink = (userCode: string) => {
 	try {
 		if (!userCode) return "";
 		// link pattern {link}/users/{userCode}
