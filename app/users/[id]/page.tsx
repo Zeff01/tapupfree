@@ -18,7 +18,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
       return;
     }
     setUser(id);
-  }, []);
+  }, [id]);
 
   const fetchUserData = async () => {
     try {
@@ -40,7 +40,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
     if (user) {
       fetchUserData();
     }
-  }, [user]);
+  }, [user, fetchUserData]);
 
   const downloadVCard = () => {
     if (!userData) return;
@@ -86,7 +86,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
         {userData ? (
           <div className="text-center mb-6">
             {userData.image ? (
-              <img
+              <Image
                 src={userData.image}
                 alt="Profile"
                 className="w-32 h-32 rounded-full mx-auto"

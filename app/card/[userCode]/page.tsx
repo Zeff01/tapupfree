@@ -31,7 +31,7 @@ export default function Card() {
     console.log("card effect");
     if (!userCode) return;
     userDataHandler();
-  }, [userCode]);
+  }, [userCode, userDataHandler]);
 
   const handleDownloadImage = async () => {
     const card = cardRef.current;

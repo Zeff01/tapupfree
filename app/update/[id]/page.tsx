@@ -116,7 +116,7 @@ export default function Update({ params }: { params: { id: string } }) {
             <div className="relative">
               <div className="rounded-full border border-border-input  p-1">
                 {photo || imageUrl ? (
-                  <img
+                  <Image
                     src={photo?.preview || imageUrl || ""}
                     alt="Profile"
                     className="w-28 h-28 rounded-full"
