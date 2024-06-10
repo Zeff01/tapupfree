@@ -120,6 +120,8 @@ export default function Update({ params }: { params: { id: string } }) {
                     src={photo?.preview || imageUrl || ""}
                     alt="Profile"
                     className="w-28 h-28 rounded-full"
+                    width={30}
+                    height={30}
                   />
                 ) : (
                   <div className="w-28 h-28 rounded-full bg-background-input border-border-input flex items-center justify-center">

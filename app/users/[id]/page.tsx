@@ -90,6 +90,8 @@ const UserPage = ({ params }: { params: { id: string } }) => {
                 src={userData.image}
                 alt="Profile"
                 className="w-32 h-32 rounded-full mx-auto"
+                width={128}
+                height={128}
               />
             ) : (
               <Image

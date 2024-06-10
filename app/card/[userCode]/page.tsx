@@ -8,6 +8,7 @@ import { Users } from "@/src/lib/firebase/store/users.type";
 import { useParams } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader";
 import Navbar from "@/components/ui/Navbar";
+import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 
 export default function Card() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -65,20 +66,47 @@ export default function Card() {
       <Navbar />
       <div
         ref={cardRef}
-        className={`text-black dark:text-black relative w-[400px] aspect-[1.5882] p-6 shadow-md rounded-md`}
+        className={`text-black dark:text-black relative w-[400px] aspect-[1.5882] p-2 shadow-md rounded-md`}
         style={{ backgroundColor: "white" }}
       >
         {user ? (
           <div className="w-full h-full flex flex-row gap-x-2 justify-between">
             <div className="flex-grow flex flex-col justify-between">
               <div>
+                <span
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    fontSize: "12px",
+                    height: "20px",
+                  }}
+                >
+                  &#128231; &nbsp;&nbsp;{user.email}
+                </span>
+
+                <span
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    fontSize: "12px",
+                    height: "20px",
+                  }}
+                >
+                  &#128222; &nbsp;&nbsp;{user.phoneNumber}
+                </span>
+              </div>
+
+              {/* <div>
                 <div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
                   <p>🖂&nbsp;&nbsp;{user.email}</p>
                 </div>
                 <div className="flex flex-row items-center gap-x-2 text-[12px] h-5">
                   <p>☏&nbsp;&nbsp;{user.phoneNumber}</p>
                 </div>
-              </div>
+              </div> */}
+
               <div className="flex flex-col gap-y-[2px]">
                 {user.image && (
                   <Image
@@ -92,12 +120,12 @@ export default function Card() {
                   />
                 )}
                 <div>
-                  <p className="font-semibold text-sm">
+                  <p className="font-semibold text-sm text-black">
                     {user.firstName}&nbsp;{user.lastName}
                   </p>
-                  <p className="text-[12px]">{user.position}</p>
+                  <p className="text-[12px] text-black">{user.position}</p>
                 </div>
-                <p className="text-[12px]">{user.company}</p>
+                <p className="text-[12px] text-black">{user.company}</p>
               </div>
             </div>
             <div>
@@ -119,7 +147,7 @@ export default function Card() {
       </div>
       <button
         onClick={handleDownloadImage}
-        className="bg-custom-purple text-white px-6 py-2 font-semibold rounded-md shadow-md active:scale-95 transition-all duration-150 disabled:opacity-50"
+        className="bg-custom-purple text-white px-6 py-2 font-semibold rounded-md active:scale-95 transition-all duration-150 disabled:opacity-50"
         disabled={Boolean(!user)}
       >
         Convert to PNG

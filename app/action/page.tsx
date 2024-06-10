@@ -16,7 +16,7 @@ const ActionPage = () => {
     const storedUser = localStorage.getItem("userCode");
     if (storedLink) setLink(storedLink);
     if (storedUser) setUser(storedUser);
-  }, [fetchUserData]);
+  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -44,7 +44,7 @@ const ActionPage = () => {
 
   if (!link) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center flex-1 bg-[#1E1E1E]">
         <MoonLoader
           loading={true}
           color="gray"
