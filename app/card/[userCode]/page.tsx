@@ -29,6 +29,8 @@ export default function Card() {
 	const handleDownloadImage = async () => {
 		const card = cardRef.current;
 		if (!card || !user) return;
+    const textTop = document.getElementById("text-top") as HTMLDivElement
+    textTop.style.transform= "translateY(-12px)"
 		await html2canvas(card, { scale: 1.1 }).then((canvas) => {
 			const imgData = canvas.toDataURL("image/png");
 
@@ -51,6 +53,7 @@ export default function Card() {
 			// Remove the link from the document
 			document.body.removeChild(link);
 		});
+    textTop.style.transform= "translateY(0px)"
 	};
 
 	return (
@@ -64,30 +67,18 @@ export default function Card() {
 				{user ? (
 					<div className="w-full h-full flex flex-row gap-x-2 justify-between">
 						<div className="flex-grow flex flex-col justify-between">
-							<div>
-								<span
-									style={{
-										display: "flex",
-										flexDirection: "row",
-										alignItems: "center",
-										fontSize: "12px",
-										height: "20px",
-									}}
+							<div id="text-top">
+								<p
+                className="text-[12px]"
 								>
 									&#128231; &nbsp;&nbsp;{user.email}
-								</span>
+								</p>
 
-								<span
-									style={{
-										display: "flex",
-										flexDirection: "row",
-										alignItems: "center",
-										fontSize: "12px",
-										height: "20px",
-									}}
+								<p
+                className="text-[12px]"									
 								>
 									&#128222; &nbsp;&nbsp;{user.phoneNumber}
-								</span>
+								</p>
 							</div>
 							<div className="flex flex-col gap-y-[2px]">
 								{user.image && (
