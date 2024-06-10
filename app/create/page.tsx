@@ -133,6 +133,8 @@ export default function Create() {
                       src={photo.preview}
                       alt="Profile"
                       className="w-28 h-28 rounded-full"
+                      width={30}
+                      height={30}
                     />
                   ) : (
                     <div className="w-28 h-28 rounded-full bg-background-input border-border-input flex items-center justify-center">

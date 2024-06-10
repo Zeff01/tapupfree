@@ -278,6 +278,8 @@ export default function Cropper({
             src={photo.preview}
             alt="Profile"
             className="w-28 h-28 rounded-full"
+            width={30}
+            height={30}
           />
         ) : (
           <>
@@ -378,6 +380,8 @@ export default function Cropper({
                         src={imgSrc}
                         style={{ transform: `scale(${scale})` }}
                         onLoad={onImageLoad}
+                        width={400}
+                        height={400}
                       />
                     </ReactCrop>
                   )}
