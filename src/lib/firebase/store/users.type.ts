@@ -8,7 +8,7 @@ export type Users = {
   phoneNumber: string;
   image: string;
   printStatus: boolean;
-  userCode: string;
+  userCode?: string;
   user_link?: string;
 };
 

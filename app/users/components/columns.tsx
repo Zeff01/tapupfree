@@ -77,7 +77,7 @@ export const columns: ColumnDef<Users>[] = [
           >
             <Copy size={15} />
           </Button>
-          <Link href={link.user_link}>
+          <Link href={link.user_link as string}>
             <Button
               variant="ghost"
               size="icon"
