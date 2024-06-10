@@ -51,6 +51,7 @@ function centerAspectCrop(
 }
 
 type CropperProps = {
+  imageUrl?: string|null;
   setImageUrl: Dispatch<SetStateAction<string | null>>;
   photo: null | Photo;
   setPhoto: Dispatch<SetStateAction<Photo | null>>;
@@ -61,6 +62,7 @@ type CropperProps = {
 };
 
 export default function Cropper({
+  imageUrl,
   setImageUrl,
   photo,
   setPhoto,
@@ -103,69 +105,6 @@ export default function Cropper({
       setCrop(centerAspectCrop(width, height, aspect));
     }
   }
-
-  // async function onDownloadCropClick() {
-  //   const image = imgRef.current;
-  //   const previewCanvas = previewCanvasRef.current;
-  //   if (!image || !previewCanvas || !completedCrop) {
-  //     throw new Error('Crop canvas does not exist');
-  //   }
-
-  //   // This will size relative to the uploaded image
-  //   // size. If you want to size according to what they
-  //   // are looking at on screen, remove scaleX + scaleY
-  //   const scaleX = image.naturalWidth / image.width;
-  //   const scaleY = image.naturalHeight / image.height;
-
-  //   const offscreen = new OffscreenCanvas(
-  //     completedCrop.width * scaleX,
-  //     completedCrop.height * scaleY
-  //   );
-  //   const ctx = offscreen.getContext('2d');
-  //   if (!ctx) {
-  //     throw new Error('No 2d context');
-  //   }
-
-  //   ctx.drawImage(
-  //     previewCanvas,
-  //     0,
-  //     0,
-  //     previewCanvas.width,
-  //     previewCanvas.height,
-  //     0,
-  //     0,
-  //     offscreen.width,
-  //     offscreen.height
-  //   );
-  //   // You might want { type: "image/jpeg", quality: <0 to 1> } to
-  //   // reduce image size
-  //   const blob = await offscreen.convertToBlob({
-  //     type: 'image/png',
-  //   });
-  //   const reader = new FileReader();
-  //   reader.onload = (event) => {
-  //     const fileAsDataURL = event.target?.result;
-  //     if (typeof fileAsDataURL === 'string') {
-  //       // You can use fileAsDataURL as needed
-  //       console.log({ fileAsDataURL });
-  //       changeImage(fileAsDataURL);
-
-  //       toggleModal();
-  //     }
-  //   };
-  //   reader.readAsDataURL(blob);
-
-  //   if (blobUrlRef.current) {
-  //     URL.revokeObjectURL(blobUrlRef.current);
-  //   }
-  //   blobUrlRef.current = URL.createObjectURL(blob);
-
-  //   // ---THIS IS USED TO DOWNLOAD THE CROPPED IMAGES---
-  //   // if (hiddenAnchorRef.current) {
-  //   //   hiddenAnchorRef.current.href = blobUrlRef.current
-  //   //   hiddenAnchorRef.current.click()
-  //   // }
-  // }
 
   async function onDownloadCropClick() {
     const image = imgRef.current;
@@ -273,13 +212,13 @@ export default function Cropper({
           onClick={toggleModal}
           placeholder="cropper"
         />
-        {photo ? (
+        {(photo || imageUrl)  ? (
           <Image
-            src={photo.preview}
+            src={photo?.preview ?? imageUrl ?? ""}
             alt="Profile"
             className="w-28 h-28 rounded-full"
-            width={30}
-            height={30}
+            width={70}
+            height={70}
           />
         ) : (
           <>
