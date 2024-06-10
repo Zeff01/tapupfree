@@ -44,7 +44,7 @@ const ActionPage = () => {
 
   if (!link) {
     return (
-      <div className="w-full h-full flex items-center justify-center flex-1 bg-[#1E1E1E]">
+      <div className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
         <MoonLoader
           loading={true}
           color="gray"
