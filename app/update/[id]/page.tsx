@@ -148,6 +148,7 @@ export default function Update({ params }: { params: { id: string } }) {
           <div className="flex flex-col items-center">
             {imagePickerType === "advanced" ? (
               <Cropper
+                imageUrl={imageUrl}
                 setImageUrl={setImageUrl}
                 setPhoto={setPhoto}
                 photo={photo}
