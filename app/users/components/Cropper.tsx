@@ -1,9 +1,10 @@
 "use client"
-import React, { useState, useRef, Dispatch, SetStateAction } from 'react';
+import React, { useState, useRef, Dispatch, SetStateAction, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { createPortal } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Minus, Plus } from 'lucide-react';
+import Image from 'next/image';
 
 import ReactCrop, {
   centerCrop,
@@ -65,6 +66,7 @@ export default function Cropper({
   const [scale, setScale] = useState(1);
   //   const [aspect, setAspect] = useState<number | undefined>(16 / 6)
   const [showModal, setShowModal] = useState(false);
+  const [csr, SetCsr] = useState(false)
 
   function toggleModal() {
     setShowModal((m) => !m);
@@ -174,38 +176,51 @@ export default function Cropper({
     [completedCrop, scale]
   );
 
-  //   function handleToggleAspectClick() {
-  //     if (aspect) {
-  //       setAspect(undefined)
-  //     } else {
-  //       setAspect(16 / 9)
+  useEffect(() => {
+    SetCsr(true)
+  }, [])
 
-  //       if (imgRef.current) {
-  //         const { width, height } = imgRef.current
-  //         const newCrop = centerAspectCrop(width, height, 16 / 9)
-  //         setCrop(newCrop)
-  //         // Updates the preview
-  //         setCompletedCrop(convertToPixelCrop(newCrop, width, height))
-  //       }
-  //     }
-  //   }
+  if (!csr) {
+    return null;
+  }
 
   return (
-    <div className="cropper w-28 h-28 rounded-full overflow-hidden">
+    <div className="cropper">
+      <div className="relative w-28 h-28 rounded-full  bg-background-input border border-border-input flex items-center justify-center">
       <Input
         type="file"
         accept="image/*"
         onChange={onSelectFile}
-        className="w-full h-full invisible"
+        className="w-full h-full absolute top-0 left-0 opacity-0"
         onClick={toggleModal}
+        placeholder='cropper'        
       />
+        <Image
+          src="/assets/imageicon.png"
+          alt="Company Logo"
+          width={30}
+          height={30}
+          priority
+          className="mx-auto pointer-events-none "
+        />
+        <div className=" pointer-events-none flex justify-center items-center w-8 h-8 border rounded-full absolute bottom-0 right-0 bg-background-input border-border-input">
+          <Image
+            src="/assets/plusicon.png"
+            alt="Add Icon"
+            width={14}
+            height={14}
+            priority
+          />
+        </div>
+      </div>
+      
 
       {createPortal(
         <>
             {showModal && (
               <div className="z-10 fixed top-0 right-0 w-screen h-screen">
                 <div className="z-20 w-full h-full bg-black opacity-80" />
-                <div className="z-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-full bg-white flex flex-col items-center gap-y-8 overflow-y-scroll  justify-between">
+                <div className="z-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-full bg-white flex flex-col items-center gap-y-8 overflow-y-scroll  justify-between">
                   <div className="pt-8 w-full flex flex-col items-center">
                     {/* <input type="file" accept="image/*" onChange={onSelectFile} /> */}
                     <div className="w-[400px] flex flex-col items-center gap-y-2">
@@ -261,7 +276,7 @@ export default function Cropper({
                         onChange={(_, percentCrop) => setCrop(percentCrop)}
                         onComplete={(c) => setCompletedCrop(c)}
                         aspect={aspect}
-                        // minWidth={400}
+                        // minWidth={400}                        
                         minHeight={100}
                         maxHeight={maxHeight}
                         circularCrop={circularCrop}

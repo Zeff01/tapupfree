@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { addUser, uploadImage } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
+// import Cropper from "../users/components/Cropper";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
@@ -69,7 +70,12 @@ export default function Create() {
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
       <div className="w-full max-w-sm">
-          
+          {/* <Cropper 
+          setFileName={() => {}} 
+          aspect={1}
+          changeImage={(i) => console.log(i)}
+          circularCrop
+          />  */}
         <div className="text-center mb-6 ">
           <Image
             src="/assets/zwift-logo.png"
@@ -95,7 +101,7 @@ export default function Create() {
             <div className="relative">
               <div className="rounded-full border border-border-input  p-1">
                 {photo ? (
-                  <Image
+                  <img
                     src={photo.preview}
                     alt="Profile"
                     className="w-28 h-28 rounded-full"
