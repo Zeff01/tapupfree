@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUserLink } from "@/lib/utils";
+import Navbar from "@/components/ui/Navbar";
 
 
 const ActionPage = () => {
@@ -21,6 +22,7 @@ const ActionPage = () => {
 
 	return (
 		<main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+			<Navbar />
 			<div className="p-6  rounded-lg">
 				<Image
 					src="/assets/zwift-logo.png"
