@@ -1,58 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import MoonLoader from "react-spinners/MoonLoader";
 import { createUserLink } from "@/lib/utils";
 
+
 const ActionPage = () => {
-	const [link, setLink] = useState<string | undefined>();
-	const [user, setUser] = useState<string | undefined>();
 	const router = useRouter();
-	const userCode = useSearchParams().get("userCode");
+	const code = useSearchParams().get("userCode") as string;
 
 	const fetchUserData = async () => {
-		try {
-			const response = await axios.get(
-				`${process.env.NEXT_PUBLIC_API_LINK}/users/${user}`
-			);
-			if (!response) {
-				throw new Error("No response from server");
-			}
-			const userCode = response.data.data.userCode;
-			const link = await createUserLink(userCode);
-			console.log("link", link);
-			window.location.href = link;
-		} catch (error) {
-			console.error("Error fetching user data: ", error);
-		}
+		const link = createUserLink(code)
+		window.location.href = link
 	};
-	useEffect(() => {
-		const storedLink = localStorage.getItem("userLink");
-		const storedUser = localStorage.getItem("userCode");
-		if (storedLink) setLink(storedLink);
-		if (storedUser) setUser(storedUser);
-	}, []);
+
 
 	const handlePrintQR = () => {
-		router.push(`/card/${userCode}`);
+		router.push(`/card/${code}`);
 	};
 
-	if (!link) {
-		return (
-			<div className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
-				<MoonLoader
-					loading={true}
-					color="gray"
-					size={40}
-					aria-label="Loading Spinner"
-					data-testid="loader"
-					speedMultiplier={0.5}
-				/>
-			</div>
-		);
-	}
 
 	return (
 		<main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
