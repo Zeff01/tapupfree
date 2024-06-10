@@ -3,17 +3,15 @@ import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
-  addUser,
   getUserBySubId,
-  uploadImage,
   updateUserById,
 } from "@/src/lib/firebase/store/users.action";
 import { Photo, Users } from "@/src/lib/firebase/store/users.type";
-import { Input } from "postcss";
 import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
 import Cropper from "@/app/users/components/Cropper";
 import { Switch } from "@/components/ui/switch";
+import { uploadImage } from "@/src/lib/firebase/store/users.upload";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -85,6 +83,7 @@ export default function Update({ params }: { params: { id: string } }) {
 
   const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      setIsLoading(true);
       const file = event.target.files[0];
       setPhoto({
         preview: URL.createObjectURL(file),
@@ -95,7 +94,9 @@ export default function Update({ params }: { params: { id: string } }) {
         preview: URL.createObjectURL(file),
         raw: file,
       });
+
       if (dl_url) setImageUrl(dl_url);
+      setIsLoading(false);
     }
   };
 
