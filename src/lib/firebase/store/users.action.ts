@@ -15,7 +15,6 @@ import {
 import { firebaseDb, firebaseStorage } from "../config/firebase";
 import { Photo, Users } from "./users.type";
 import { createUserLink } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import revalidateUserPath from "./user.revalidate";
 
