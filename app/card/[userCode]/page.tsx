@@ -29,9 +29,9 @@ export default function Card() {
 	const handleDownloadImage = async () => {
 		const card = cardRef.current;
 		if (!card || !user) return;
-    const textTop = document.getElementById("text-top") as HTMLDivElement
-    textTop.style.transform= "translateY(-8px)"
-		await html2canvas(card, { scale: 1.1 }).then((canvas) => {
+		const textTop = document.getElementById("text-top") as HTMLDivElement;
+		textTop.style.transform = "translateY(-8px)";
+		await html2canvas(card, { scale: 3 }).then((canvas) => {
 			const imgData = canvas.toDataURL("image/png");
 
 			// Create a link element
@@ -53,7 +53,7 @@ export default function Card() {
 			// Remove the link from the document
 			document.body.removeChild(link);
 		});
-    textTop.style.transform= "translateY(0px)"
+		textTop.style.transform = "translateY(0px)";
 	};
 
 	return (
@@ -68,15 +68,11 @@ export default function Card() {
 					<div className="w-full h-full flex flex-row gap-x-2 justify-between">
 						<div className="flex-grow flex flex-col justify-between">
 							<div id="text-top">
-								<p
-                className="text-[12px]"
-								>
+								<p className="text-[12px]">
 									&#128231; &nbsp;&nbsp;{user.email}
 								</p>
 
-								<p
-                className="text-[12px]"									
-								>
+								<p className="text-[12px]">
 									&#128222; &nbsp;&nbsp;{user.phoneNumber}
 								</p>
 							</div>
