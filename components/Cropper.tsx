@@ -27,6 +27,7 @@ import { useDebounceEffect } from "@/hooks/useDebounceEffect";
 
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -156,8 +157,10 @@ export default function Cropper({
           });
           setPhoto({ preview: fileAsDataURL, raw: file });
           if (dl_url) setImageUrl(dl_url);
+          toast.success("Image cropped and uploaded.")
         } catch (error) {
           console.error(error, "failed to upload image");
+          toast.error("Failed to crop and upload image")
         } finally {
           setLoading(false);
           toggleModal();
@@ -248,7 +251,7 @@ export default function Cropper({
           {showModal && (
             <div className="z-10 fixed top-0 right-0 w-screen h-screen">
               <div className="z-20 w-full h-full bg-black opacity-80" />
-              <div className="z-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-full bg-white flex flex-col items-center gap-y-8 overflow-y-scroll  justify-between">
+              <div className=" z-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-full bg-custom-light flex flex-col items-center gap-y-8 overflow-y-scroll  justify-between">
                 <div className="pt-8 w-full flex flex-col items-center">
                   {/* <input type="file" accept="image/*" onChange={onSelectFile} /> */}
                   <div className="w-[400px] flex flex-col items-center gap-y-2">
@@ -275,7 +278,7 @@ export default function Cropper({
                       variant={"outline"}
                       type="button"
                       onClick={toggleModal}
-                      className="w-20"
+                      className="w-20 text-white"
                     >
                       Cancel
                     </Button>
@@ -309,7 +312,7 @@ export default function Cropper({
                       onComplete={(c) => setCompletedCrop(c)}
                       aspect={aspect}
                       // minWidth={400}
-                      minHeight={100}
+                      minHeight={60}
                       maxHeight={maxHeight}
                       circularCrop={circularCrop}
                     >
