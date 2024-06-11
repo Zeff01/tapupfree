@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import { Users } from "@/src/lib/firebase/store/users.type";
 import FieldwithLogo from "@/components/FieldwithLogo";
@@ -8,11 +7,13 @@ import { CircleUser } from "lucide-react";
 import Link from "next/link";
 import CodibilityLogo from "@/components/CodibilityLogo";
 import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
+import BounceLoader from "react-spinners/BounceLoader"
 
 const UserPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [userData, setUserData] = useState<Users | null>(null);
   const [user, setUser] = useState<string | undefined>();
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userCode");
@@ -105,13 +106,17 @@ const UserPage = ({ params }: { params: { id: string } }) => {
           {userData ? (
             <div className="text-center mb-6">
               {userData.image ? (
-                <Image
-                  src={userData.image}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full mx-auto"
-                  width={128}
-                  height={128}
-                />
+                <div className="relative w-32 h-32 rounded-full mx-auto flex items-center justify-center">
+                  <Image
+                    src={userData.image}
+                    alt="Profile"
+                    className="w-32 h-32 rounded-full z-50 absolute top-0 left-0"
+                    width={128}
+                    height={128}
+                    onLoad={() => setImageLoaded(true)}
+                    />
+                    <BounceLoader size={80} color="#6150EB" className={`${imageLoaded ? "opacity-0": "opacity-1"}`} />
+                  </div>
               ) : (
                 <CircleUser size={120} className="mx-auto text-[#767676]" />                
               )}

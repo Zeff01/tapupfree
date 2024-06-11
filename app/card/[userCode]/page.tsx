@@ -30,7 +30,7 @@ export default function Card() {
 		const card = cardRef.current;
 		if (!card || !user) return;
     const textTop = document.getElementById("text-top") as HTMLDivElement
-    textTop.style.transform= "translateY(-12px)"
+    textTop.style.transform= "translateY(-8px)"
 		await html2canvas(card, { scale: 1.1 }).then((canvas) => {
 			const imgData = canvas.toDataURL("image/png");
 
@@ -102,7 +102,7 @@ export default function Card() {
 							</div>
 						</div>
 						<div>
-							<QRCodeSVG value={user.user_link as string} size={100} />
+							<QRCodeSVG value={user.user_link as string} size={150} />
 						</div>
 					</div>
 				) : (
