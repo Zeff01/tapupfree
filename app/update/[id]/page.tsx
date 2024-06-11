@@ -8,7 +8,7 @@ import {
 import { Photo, Users } from "@/src/lib/firebase/store/users.type";
 import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
-import Cropper from "@/app/users/components/Cropper";
+import Cropper from "@/components/Cropper";
 import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.action";
 import { useRouter } from "next/navigation";

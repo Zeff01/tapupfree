@@ -54,7 +54,8 @@ const config = {
         },
         custom: {
           black: "rgb(30,30,30)",
-          purple: "#6150EB"
+          purple: "#6150EB",
+          light: "#978deb"
         }
       },
       backgroundImage: {

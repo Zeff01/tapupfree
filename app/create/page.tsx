@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { addUser } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
 import { LoaderCircle } from "lucide-react";
-import Cropper from "../users/components/Cropper";
+import Cropper from "../../components/Cropper";
 import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.action";
 import { inputs } from "@/src/lib/data";
