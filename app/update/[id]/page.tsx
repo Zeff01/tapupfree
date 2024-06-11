@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.action";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/ui/Navbar";
+import { LoaderCircle } from "lucide-react";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -262,7 +263,14 @@ export default function Update({ params }: { params: { id: string } }) {
             disabled={isLoading}
             className="w-full px-4 py-4 bg-[#6150EB] disabled:bg-[#6150EB]/50 disabled:cursor-not-allowed hover:bg-[#6250ebc0] rounded-md font-bold"
           >
-            Update
+            {
+              isLoading ?
+              <span className="w-full flex items-center justify-center">
+                <LoaderCircle className="animate-spin" />
+              </span> :
+              "Update"
+            }
+            
           </button>
         </form>
       </div>
