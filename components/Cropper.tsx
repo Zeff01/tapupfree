@@ -278,7 +278,8 @@ export default function Cropper({
                       variant={"outline"}
                       type="button"
                       onClick={toggleModal}
-                      className="w-20 text-white"
+                      className="w-20 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={loading}
                     >
                       Cancel
                     </Button>
@@ -286,7 +287,8 @@ export default function Cropper({
                       <Button
                         type="button"
                         onClick={onDownloadCropClick}
-                        className="w-20"
+                        className="w-20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={loading}
                       >
                         {loading ? (
                           <span className="w-full flex items-center justify-center">

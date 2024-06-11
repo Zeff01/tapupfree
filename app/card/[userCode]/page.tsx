@@ -5,26 +5,31 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
 import { Users } from "@/src/lib/firebase/store/users.type";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import MoonLoader from "react-spinners/MoonLoader";
 import Navbar from "@/components/ui/Navbar";
+import { toast } from "react-toastify";
 
 export default function Card() {
 	const cardRef = useRef<HTMLDivElement>(null);
 	const [user, setUser] = useState<Users | null>(null);
+	const [dlTimeout, setDlTimeout] = useState(0)
 	const { userCode } = useParams() as { userCode: string };
+	const router = useRouter()
 
 	const userDataHandler = async () => {
 		const data = await getUserDataByUserCode(userCode);
-		if (!data) return;
+		if (!data) {
+			toast.error("user not found.")
+			setTimeout(() => {
+				router.push("/")
+			}, 500)
+			return;
+		}
 		setUser(data);
 	};
 
-	useEffect(() => {
-		console.log("card effect");
-		if (!userCode) return;
-		userDataHandler();
-	}, [userCode]);
+	
 
 	const handleDownloadImage = async () => {
 		const card = cardRef.current;
@@ -51,10 +56,25 @@ export default function Card() {
 			link.click();
 
 			// Remove the link from the document
-			document.body.removeChild(link);
+			document.body.removeChild(link);			
 		});
-    textTop.style.transform= "translateY(0px)"
+    	textTop.style.transform= "translateY(0px)"
+		setDlTimeout(2) // cannot click button for 3 seconds
 	};
+
+	useEffect(() => {
+		console.log("card effect");
+		if (!userCode) return;
+		userDataHandler();
+	}, []);
+
+	useEffect(() => {
+		if (dlTimeout <= 0) return;
+		const timeout = setTimeout(() => {
+			setDlTimeout(p => p - 1)
+		}, 1000)
+		return () => clearTimeout(timeout)
+	}, [dlTimeout])
 
 	return (
 		<div className="bg-custom-black w-full h-screen flex flex-col items-center px-2 py-16 gap-y-4 overflow-y-hidden">
@@ -120,8 +140,8 @@ export default function Card() {
 			</div>
 			<button
 				onClick={handleDownloadImage}
-				className="bg-custom-purple text-white px-6 py-2 font-semibold rounded-md active:scale-95 transition-all duration-150 disabled:opacity-50"
-				disabled={Boolean(!user)}
+				className="bg-custom-purple text-white px-6 py-2 font-semibold rounded-md active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+				disabled={Boolean(!user || dlTimeout > 0)}
 			>
 				Convert to PNG
 			</button>
