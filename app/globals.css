@@ -91,6 +91,34 @@
       )
       rgb(var(--background-start-rgb));
   }
+
+  /* Style the scrollbar track */
+::-webkit-scrollbar {
+  width: 12px; /* Set the width of the scrollbar */
+  height: 12px
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 3px; /* Rounded corners for the thumb */
+  @apply bg-custom-purple /* Color of the thumb */
+}
+
+/* Style the scrollbar thumb when hovered */
+::-webkit-scrollbar-thumb:hover {
+  /* Color of the thumb on hover */
+  /* background-color: #555;  */
+  @apply bg-custom-purple /* Color of the thumb */
+
+}
+
+/* Style the scrollbar track when the thumb is grabbed (clicked) */
+::-webkit-scrollbar-thumb:active {
+  /* background-color: #333; */
+  @apply bg-custom-purple /* Color of the thumb */
+
+}
 }
 
 @layer utilities {
