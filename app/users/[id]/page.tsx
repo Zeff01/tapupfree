@@ -5,6 +5,9 @@ import Image from "next/image";
 import { Users } from "@/src/lib/firebase/store/users.type";
 import FieldwithLogo from "@/components/FieldwithLogo";
 import { CircleUser } from "lucide-react";
+import Link from "next/link";
+import CodibilityLogo from "@/components/CodibilityLogo";
+import { getUserDataByUserCode } from "@/src/lib/firebase/store/users.action";
 
 const UserPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -23,16 +26,28 @@ const UserPage = ({ params }: { params: { id: string } }) => {
   const fetchUserData = async () => {
     try {
       console.log("Fetching user data...");
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_LINK}/users/${user}`
-      );
+      const response = await getUserDataByUserCode(id)
       if (!response) {
-        throw new Error("No response from server");
+        throw new Error("Invalid user code.");
       }
-      console.log("User data: ", response.data.data);
-      setUserData(response.data.data);
+      console.log("User data: ", response);
+      setUserData(response);
     } catch (error) {
       console.error("Error fetching user data: ", error);
+      // when user data is invalid
+      setUserData({
+        id: "",
+        company: "Unknown company",
+        position: "Unknown position",
+        firstName: "Invalid",
+        lastName: "Id",
+        email: "unknown email",
+        phoneNumber: "+639*********",
+        image: "",
+        printStatus: false,
+        userCode: "",
+        user_link: ""
+      })
     }
   };
 
@@ -69,19 +84,22 @@ const UserPage = ({ params }: { params: { id: string } }) => {
     document.body.removeChild(link);
   };
 
+
   return (
     <>
       <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
         <div className="w-full max-w-sm">
           <div className="text-center mb-6 ">
-            <Image
-              src="/assets/zwift-logo.png"
-              alt="Company Logo"
-              width={150}
-              height={150}
-              priority
-              className="mx-auto mb-12"
-            />
+            <Link href={process.env.NEXT_PUBLIC_ZWIFT_TECH_LINK ?? ""} target="_blank">
+              <Image
+                src="/assets/zwift-logo.png"
+                alt="Company Logo"
+                width={150}
+                height={150}
+                priority
+                className="mx-auto mb-12"
+                />
+            </Link>
             <h2 className="text-lg font-semibold mt-2">Personal Portfolio</h2>
           </div>
           {userData ? (
@@ -95,14 +113,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
                   height={128}
                 />
               ) : (
-                <Image
-                  src="/assets/image-placeholder.svg"
-                  alt="No profile"
-                  width={128}
-                  height={128}
-                  priority
-                  className="mx-auto"
-                />
+                <CircleUser size={120} className="mx-auto text-[#767676]" />                
               )}
 
               <h1 className="text-xl font-semibold mt-4">
@@ -131,11 +142,18 @@ const UserPage = ({ params }: { params: { id: string } }) => {
 
               <div className="mt-8 flex justify-center">
                 <button
-                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8"
+                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
+                  disabled={!userData || !userData.userCode}
                   onClick={downloadVCard}
                 >
                   Save Contact
                 </button>
+              </div>
+              <div className="mt-8 my-4 flex flex-col items-end">
+                <div className="flex flex-col items-start">
+                <p className="text-[12px]">partnered by</p>
+                <CodibilityLogo />
+                </div>
               </div>
             </div>
           ) : (
@@ -173,6 +191,12 @@ const UserPage = ({ params }: { params: { id: string } }) => {
                   >
                     Save Contact
                   </button>
+                </div>
+                <div className="mt-8 my-4 flex justify-end">
+                  <div className="flex flex-col items-start">
+                  <p className="text-[12px]">partnered by</p>
+                  <CodibilityLogo />
+                  </div>
                 </div>
               </div>
             </div>
