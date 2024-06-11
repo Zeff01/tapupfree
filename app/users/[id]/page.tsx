@@ -147,7 +147,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
 
               <div className="mt-8 flex justify-center">
                 <button
-                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
+                  className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!userData || !userData.userCode}
                   onClick={downloadVCard}
                 >
@@ -191,7 +191,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
 
                 <div className="mt-8 flex justify-center">
                   <button
-                    className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50"
+                    className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled
                   >
                     Save Contact
