@@ -124,7 +124,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
               <h1 className="text-xl font-semibold mt-4">
                 {userData.firstName} {userData.lastName}
               </h1>
-              <h1 className="text-lg font-semibold text-[#767676]">
+              <h1 className="text-base sm:text-lg font-semibold text-[#767676]">
                 {userData.email}
               </h1>
 
@@ -156,17 +156,17 @@ const UserPage = ({ params }: { params: { id: string } }) => {
               </div>              
             </div>
           ) : (
-            <div className="bg-custom-black w-[384px] h-[596px]">
+            <div className="bg-custom-black max-w-sm max-h-[596px]">
               <div className="text-center mb-6">
                 <CircleUser size={120} className="mx-auto text-[#767676]" />
-                <h1 className="text-xl font-semibold mt-4 w-[100px] bg-[#767676] rounded-xl mx-auto my-2">
-                  &nbsp;
+                <h1 className="w-fit text-transparent text-xl font-semibold mt-4 bg-[#767676] rounded-xl mx-auto mb-[6px]">
+                  User Loading...
                 </h1>
-                <h1 className="text-lg font-semibold w-[200px] bg-[#767676] rounded-xl mx-auto">
-                  &nbsp;
+                <h1 className="w-fit text-base sm:text-lg text-transparent font-semibold bg-[#767676] rounded-xl mx-auto">
+                  Email Loading...
                 </h1>
 
-                <div className="flex flex-col  mx-auto my-8 ">
+                <div className="flex flex-col my-8 ">
                   <div className="mx-auto flex flex-col gap-8">
                     <FieldwithLogo
                       imgUrl={"/assets/phoneLogo.png"}
