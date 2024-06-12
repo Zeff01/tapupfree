@@ -8,7 +8,7 @@ export default function CodibilityLogo() {
             width={300}
             height={100}
             alt="codibility logo"
-            className="w-[150px]"
+            className="w-[100px]"
             />
         </Link>
     )

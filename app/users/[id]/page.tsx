@@ -145,24 +145,18 @@ const UserPage = ({ params }: { params: { id: string } }) => {
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-center">
+              <div className="mt-8 flex flex-col items-center justify-center">
                 <button
                   className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!userData || !userData.userCode}
                   onClick={downloadVCard}
                 >
                   Save Contact
-                </button>
-              </div>
-              <div className="mt-8 my-4 flex flex-col items-end">
-                <div className="flex flex-col items-start">
-                <p className="text-[12px]">partnered by</p>
-                <CodibilityLogo />
-                </div>
-              </div>
+                </button>              
+              </div>              
             </div>
           ) : (
-            <div className="w-[384px] h-[596px]">
+            <div className="bg-custom-black w-[384px] h-[596px]">
               <div className="text-center mb-6">
                 <CircleUser size={120} className="mx-auto text-[#767676]" />
                 <h1 className="text-xl font-semibold mt-4 w-[100px] bg-[#767676] rounded-xl mx-auto my-2">
@@ -189,23 +183,21 @@ const UserPage = ({ params }: { params: { id: string } }) => {
                   </div>
                 </div>
 
-                <div className="mt-8 flex justify-center">
+                <div className="mt-8 flex flex-col items-center justify-center">
                   <button
                     className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled
                   >
                     Save Contact
-                  </button>
-                </div>
-                <div className="mt-8 my-4 flex justify-end">
-                  <div className="flex flex-col items-start">
-                  <p className="text-[12px]">partnered by</p>
-                  <CodibilityLogo />
-                  </div>
+                  </button>                  
                 </div>
               </div>
             </div>
           )}
+        </div>
+        <div className="flex flex-col items-start pt-16 w-fit self-end ">
+          <p className="text-[10px]">partnered by</p>
+          <CodibilityLogo />
         </div>
       </main>
     </>
