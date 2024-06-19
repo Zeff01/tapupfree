@@ -16,19 +16,6 @@ import { createUserLink } from "@/lib/utils";
 
 export const columns: ColumnDef<Users>[] = [
   {
-    accessorKey: "id",
-    header: () => <div className="min-w-[10rem]">Id</div>,
-  },
-
-  {
-    accessorKey: "firstName",
-    header: () => <div className="min-w-[10rem]">FirstName</div>,
-  },
-  {
-    accessorKey: "lastName",
-    header: () => <div className="">LastName</div>,
-  },
-  {
     accessorKey: "email",
     header: ({ column }) => {
       return (
@@ -42,6 +29,23 @@ export const columns: ColumnDef<Users>[] = [
       );
     },
   },
+  {
+    accessorKey: "company",
+    header: () => <div className="min-w-[10rem]">Company</div>,
+  },
+  {
+    accessorKey: "position",
+    header: () => <div className="min-w-[10rem]">position</div>,
+  },
+  {
+    accessorKey: "firstName",
+    header: () => <div className="min-w-[10rem]">FirstName</div>,
+  },
+  {
+    accessorKey: "lastName",
+    header: () => <div className="">LastName</div>,
+  },
+
   {
     id: "actions",
     header: () => <div className="text-center ">Actions</div>,
