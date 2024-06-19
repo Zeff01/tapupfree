@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { addUser } from "@/src/lib/firebase/store/users.action";
 import { Photo } from "@/src/lib/firebase/store/users.type";
 import { LoaderCircle } from "lucide-react";
-import Cropper from "../users/components/Cropper";
+import Cropper from "../../components/Cropper";
 import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.action";
+import { inputs } from "@/src/lib/data";
+import Navbar from "@/components/ui/Navbar";
 
 export default function Create() {
   const [photo, setPhoto] = useState<Photo | null>(null);
@@ -43,7 +45,7 @@ export default function Create() {
       firstName: form.firstName.value,
       lastName: form.lastName.value,
       email: form.email.value,
-      phoneNumber: form.phone.value,
+      phoneNumber: form.phoneNumber.value,
       image: imageUrl || "",
       printStatus: false,
     });
@@ -76,6 +78,7 @@ export default function Create() {
 
   return (
     <main className="flex min-h-screen bg-[#1E1E1E] text-white flex-col items-center pt-12 p-6 ">
+      <Navbar />
       <div className="w-full flex flex-row justify-end">
         <div className="flex flex-col w-[150px] bg-custom-purple p-1 rounded-md">
           <p>Image Picker Type</p>
@@ -169,41 +172,7 @@ export default function Create() {
             )}
           </div>
 
-          {[
-            {
-              name: "position",
-              placeholder: "Your position",
-              label: "Position:",
-            },
-            {
-              name: "company",
-              placeholder: "Name of Company",
-              label: "Company:",
-            },
-            {
-              name: "firstName",
-              placeholder: "Enter your first name",
-              label: "First Name:",
-            },
-            {
-              name: "lastName",
-              placeholder: "Enter your last name",
-              label: "Last Name:",
-            },
-            {
-              name: "email",
-              placeholder: "Your active email",
-              label: "Email:",
-              type: "email",
-            },
-            {
-              name: "phone",
-              placeholder: "+63",
-              label: "Phone Number:",
-              type: "tel",
-              pattern: "+639[0-9]{9}",
-            },
-          ].map((field) => (
+          {inputs.map((field) => (
             <div key={field.name}>
               <label className="block">
                 {field.label}
@@ -221,7 +190,8 @@ export default function Create() {
 
           <button
             type="submit"
-            className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold"
+            className="w-full px-4 py-4 bg-[#6150EB] hover:bg-[#6250ebc0] rounded-md font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
           >
             {loading ? (
               <span className="w-full flex items-center justify-center">

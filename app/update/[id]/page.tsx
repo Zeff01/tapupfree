@@ -8,11 +8,13 @@ import {
 import { Photo, Users } from "@/src/lib/firebase/store/users.type";
 import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
-import Cropper from "@/app/users/components/Cropper";
+import Cropper from "@/components/Cropper";
 import { Switch } from "@/components/ui/switch";
 import { uploadImage } from "@/src/lib/firebase/store/users.action";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/ui/Navbar";
+import { LoaderCircle } from "lucide-react";
+import { inputs } from "@/src/lib/data";
 
 export default function Update({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -198,41 +200,7 @@ export default function Update({ params }: { params: { id: string } }) {
               </div>
             )}
           </div>
-          {[
-            {
-              name: "position",
-              placeholder: "Your position",
-              label: "Position:",
-            },
-            {
-              name: "company",
-              placeholder: "Name of Company",
-              label: "Company:",
-            },
-            {
-              name: "firstName",
-              placeholder: "Enter your first name",
-              label: "First Name:",
-            },
-            {
-              name: "lastName",
-              placeholder: "Enter your last name",
-              label: "Last Name:",
-            },
-            {
-              name: "email",
-              placeholder: "Your active email",
-              label: "Email:",
-              type: "email",
-            },
-            {
-              name: "phoneNumber",
-              placeholder: "+63",
-              label: "Phone Number:",
-              type: "tel",
-              pattern: "+639[0-9]{9}",
-            },
-          ].map((field) =>
+          {inputs.map((field) =>
             user ? (
               <div key={field.name}>
                 <label className="block">
@@ -262,7 +230,14 @@ export default function Update({ params }: { params: { id: string } }) {
             disabled={isLoading}
             className="w-full px-4 py-4 bg-[#6150EB] disabled:bg-[#6150EB]/50 disabled:cursor-not-allowed hover:bg-[#6250ebc0] rounded-md font-bold"
           >
-            Update
+            {
+              isLoading ?
+              <span className="w-full flex items-center justify-center">
+                <LoaderCircle className="animate-spin" />
+              </span> :
+              "Update"
+            }
+            
           </button>
         </form>
       </div>
